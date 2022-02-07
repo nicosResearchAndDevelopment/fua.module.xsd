@@ -1,38 +1,33 @@
 const
-    xsd     = exports,
-    util    = require('@nrd/fua.core.util'),
-    context = require('@nrd/fua.resource.data/context');
+    xsd  = exports,
+    util = require('@nrd/fua.core.util');
 
 xsd.parseLiteral = function (literal) {
-    const
+    let
         isObject = util.isObject(literal),
         value    = (isObject && (literal['@value'] ?? literal.value)) ?? literal,
         datatype = (isObject && (literal['@type'] ?? literal.datatype?.value)) ?? 'xsd:string';
 
+    if (datatype.startsWith('http://www.w3.org/2001/XMLSchema#')) datatype = datatype.substr(33);
+    else if (datatype.startsWith('xsd:')) datatype = datatype.substr(4);
+    else if (datatype.startsWith('xs:')) datatype = datatype.substr(3);
+
     switch (datatype) {
-        case 'xsd:string':
-        case  'http://www.w3.org/2001/XMLSchema#string':
+        case 'string':
             return xsd.string(value);
-        case 'xsd:base64Binary':
-        case 'http://www.w3.org/2001/XMLSchema#base64Binary':
+        case 'base64Binary':
             return xsd.base64Binary(value);
-        case 'xsd:hexBinary':
-        case 'http://www.w3.org/2001/XMLSchema#hexBinary':
+        case 'hexBinary':
             return xsd.hexBinary(value);
-        case 'xsd:boolean':
-        case 'http://www.w3.org/2001/XMLSchema#boolean':
+        case 'boolean':
             return xsd.boolean(value);
-        case 'xsd:decimal':
-        case 'http://www.w3.org/2001/XMLSchema#decimal':
+        case 'decimal':
             return xsd.decimal(value);
-        case 'xsd:integer':
-        case 'http://www.w3.org/2001/XMLSchema#integer':
+        case 'integer':
             return xsd.integer(value);
-        case 'xsd:double':
-        case 'http://www.w3.org/2001/XMLSchema#double':
+        case 'double':
             return xsd.double(value);
-        case 'xsd:float':
-        case 'http://www.w3.org/2001/XMLSchema#float':
+        case 'float':
             return xsd.float(value);
         default:
             throw new Error('unknown type ' + datatype);

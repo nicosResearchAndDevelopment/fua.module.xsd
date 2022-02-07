@@ -27,7 +27,7 @@ describe('module.xsd', function () {
         }));
         console.log(xsd.analyseLiteral({
             '@value': Buffer.from('Hello World!').toString('base64'),
-            '@type':  'xsd:base64Binary'
+            '@type':  'http://www.w3.org/2001/XMLSchema#base64Binary'
         }));
     }); // xsd.analyseLiteral
 
