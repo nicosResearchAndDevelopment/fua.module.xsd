@@ -31,41 +31,43 @@ describe('module.xsd', function () {
         }));
     }); // xsd.analyseLiteral
 
-    test('xsd.string', function () {
-        expect(xsd.string(true)).toBe('true');
-        expect(xsd.string(1e3)).toBe('1000');
-        expect(xsd.string({'@value': 'Hello World!'})).toBe('Hello World!');
-    }); // xsd.string
+    describe('xsd.types', function () {
 
-    test('xsd.boolean', function () {
-        expect(xsd.boolean('False')).toBe(false);
-        expect(xsd.boolean('1')).toBe(true);
-    }); // xsd.boolean
+        test('xsd:string', function () {
+            expect(xsd.types.string(true)).toBe('true');
+            expect(xsd.types.string(1e3)).toBe('1000');
+            expect(xsd.types.string({'@value': 'Hello World!'})).toBe('Hello World!');
+        }); // xsd.string
 
-    test('xsd.decimal', function () {
-        expect(xsd.decimal('+100')).toBe(100);
-        expect(xsd.decimal('-.3')).toBe(-0.3);
-        expect(xsd.decimal('123.456789')).toBe(123.456789);
-    }); // xsd.decimal
+        test('xsd:boolean', function () {
+            expect(xsd.types.boolean('False')).toBe(false);
+            expect(xsd.types.boolean('1')).toBe(true);
+        }); // xsd.boolean
 
-    test('xsd.integer', function () {
-        expect(xsd.integer('+100')).toBe(100);
-        expect(xsd.integer('-.3')).toBe(NaN);
-        expect(xsd.integer('123.456789')).toBe(123);
-    }); // xsd.integer
+        test('xsd:decimal', function () {
+            expect(xsd.types.decimal('+100')).toBe(100);
+            expect(xsd.types.decimal('-.3')).toBe(-0.3);
+            expect(xsd.types.decimal('123.456789')).toBe(123.456789);
+        }); // xsd.decimal
 
-    test('xsd.double', function () {
-        expect(xsd.double('+100')).toBe(100);
-        expect(xsd.double('-.3')).toBe(-0.3);
-        expect(xsd.double('123.456789')).toBe(123.456789);
-    }); // xsd.double
+        test('xsd:integer', function () {
+            expect(xsd.types.integer('+100')).toBe(100);
+            expect(xsd.types.integer('-.3')).toBe(NaN);
+            expect(xsd.types.integer('123.456789')).toBe(123);
+        }); // xsd.integer
 
-    test('xsd.float', function () {
-        expect(xsd.float('+100')).toBe(100);
-        expect(xsd.float('-.3')).toBe(-0.30000001192092896);
-        expect(xsd.float('123.456789')).toBe(123.456787109375);
-    }); // xsd.float
+        test('xsd:double', function () {
+            expect(xsd.types.double('+100')).toBe(100);
+            expect(xsd.types.double('-.3')).toBe(-0.3);
+            expect(xsd.types.double('123.456789')).toBe(123.456789);
+        }); // xsd.double
 
-    // TODO
+        test('xsd:float', function () {
+            expect(xsd.types.float('+100')).toBe(100);
+            expect(xsd.types.float('-.3')).toBe(-0.30000001192092896);
+            expect(xsd.types.float('123.456789')).toBe(123.456787109375);
+        });
+
+    });
 
 });
