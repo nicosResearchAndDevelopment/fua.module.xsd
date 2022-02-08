@@ -11,6 +11,10 @@ describe('module.xsd', function () {
             '@type':  'xsd:boolean'
         })).toBe(true);
         expect(xsd.parseLiteral({
+            '@value': '42',
+            '@type':  'xsd:integer'
+        })).toBe(42);
+        expect(xsd.parseLiteral({
             '@value': '112.322',
             '@type':  'xsd:decimal'
         })).toBe(112.322);
@@ -18,6 +22,10 @@ describe('module.xsd', function () {
             '@value': '12e-1',
             '@type':  'xsd:double'
         })).toBe(1.2);
+        expect(xsd.parseLiteral({
+            '@value': '42',
+            '@type':  'xsd:string'
+        })).toBe("42");
     }); // xsd.parseLiteral
 
     test('xsd.analyseLiteral', function () {
