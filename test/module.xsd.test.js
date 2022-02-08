@@ -54,7 +54,9 @@ describe('module.xsd', function () {
 
         test('xsd:decimal', function () {
             expect(xsd.types.decimal('+100')).toBe(100);
-            expect(xsd.types.decimal('-.3')).toBe(-0.3);
+            expect(xsd.types.decimal('.3')).toBe(0.3);
+            expect(xsd.types.decimal('0.3')).toBe(0.3);
+            expect(xsd.types.decimal('-3.')).toBe(-3);
             expect(xsd.types.decimal('123.456789')).toBe(123.456789);
         }); // xsd.decimal
 

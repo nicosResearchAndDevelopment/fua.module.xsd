@@ -1,18 +1,11 @@
 const
-    types = exports;
-
-// TODO xs:ENTITIES
-// TODO xs:ENTITY
-// TODO xs:ID
-// TODO xs:IDREF
-// TODO xs:IDREFS
-// TODO xs:NOTATION
-// TODO xs:NMTOKEN
-// TODO xs:NMTOKENS
+    types = exports,
+    util  = require('./module.xsd.util.js');
 
 //region >> string
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#string
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-string
  * @returns {string}
  */
@@ -25,6 +18,7 @@ types.string = function (value) {
             return value.toString();
         case 'object':
             if (!value) throw new Error('null value');
+            if (value instanceof Date) return value.toString();
             if (value instanceof Buffer) return value.toString('utf8');
             if ('@value' in value) return types.string(value['@value']);
             if ('value' in value) return types.string(value.value);
@@ -37,6 +31,7 @@ types.string = function (value) {
 }; // types.string
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#normalizedString
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-normalizedstring
  * @returns {string}
  */
@@ -46,6 +41,7 @@ types.normalizedString = function (value) {
 }; // types.normalizedString
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#token
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-token
  * @returns {string}
  */
@@ -55,35 +51,166 @@ types.token = function (value) {
 }; // types.token
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#anyURI
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-anyuri
  * @returns {string}
  */
 types.anyURI = function (value) {
     value = types.string(value);
-    if (/\s/.test(value))
-        throw new Error('contains whitespaces');
+    if (!util.anyURIPattern.test(value))
+        throw new Error('invalid anyURI pattern');
     return value;
 }; // types.anyURI
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#language
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-language
  * @returns {string}
  */
 types.language = function (value) {
     value = types.string(value);
-    if (!/^[a-z]{1,3}(?:-[a-z0-9]{1,8})*$/i.test(value))
-        throw new Error('invalid pattern');
+    if (!util.languagePattern.test(value))
+        throw new Error('invalid language pattern');
     return value;
 }; // types.language
 
-// TODO xs:Name
-// TODO xs:QName
-// TODO xs:NCName
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#Name
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-name
+ * @returns {string}
+ */
+types.Name = function (value) {
+    value = types.string(value);
+    if (!util.NamePattern.test(value))
+        throw new Error('invalid Name pattern');
+    return value;
+}; // types.Name
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#NCName
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-ncname
+ * @returns {string}
+ */
+types.NCName = function (value) {
+    value = types.string(value);
+    if (!util.NCNamePattern.test(value))
+        throw new Error('invalid NCName pattern');
+    return value;
+}; // types.NCName
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#ID
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-id
+ * @returns {string}
+ */
+types.ID = function (value) {
+    value = types.string(value);
+    if (!util.NCNamePattern.test(value))
+        throw new Error('invalid ID pattern');
+    return value;
+}; // types.ID
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#IDREF
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-idref
+ * @returns {string}
+ */
+types.IDREF = function (value) {
+    value = types.string(value);
+    if (!util.NCNamePattern.test(value))
+        throw new Error('invalid IDREF pattern');
+    return value;
+}; // types.IDREF
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#IDREFS
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-idrefs
+ * @returns {string}
+ */
+types.IDREFS = function (value) {
+    value = types.string(value);
+    if (!util.NCNamesPattern.test(value))
+        throw new Error('invalid IDREFS pattern');
+    return value;
+}; // types.IDREFS
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#ENTITY
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-entity
+ * @returns {string}
+ */
+types.ENTITY = function (value) {
+    value = types.string(value);
+    if (!util.NCNamePattern.test(value))
+        throw new Error('invalid ENTITY pattern');
+    return value;
+}; // types.ENTITY
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#ENTITIES
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-entities
+ * @returns {string}
+ */
+types.ENTITIES = function (value) {
+    value = types.string(value);
+    if (!util.NCNamesPattern.test(value))
+        throw new Error('invalid ENTITIES pattern');
+    return value;
+}; // types.ENTITIES
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#QName
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-qname
+ * @returns {string}
+ */
+types.QName = function (value) {
+    value = types.string(value);
+    if (!util.QNamePattern.test(value))
+        throw new Error('invalid QName pattern');
+    return value;
+}; // types.QName
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#NOTATION
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-notation
+ * @returns {string}
+ */
+types.NOTATION = function (value) {
+    value = types.string(value);
+    if (!util.QNamePattern.test(value))
+        throw new Error('invalid NOTATION pattern');
+    return value;
+}; // types.NOTATION
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#NMTOKEN
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nmtoken
+ * @returns {string}
+ */
+types.NMTOKEN = function (value) {
+    value = types.string(value);
+    if (!util.NmtokenPattern.test(value))
+        throw new Error('invalid NMTOKEN pattern');
+    return value;
+}; // types.NMTOKEN
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#NMTOKENS
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nmtokens
+ * @returns {string}
+ */
+types.NMTOKENS = function (value) {
+    value = types.string(value);
+    if (!util.NmtokensPattern.test(value))
+        throw new Error('invalid NMTOKENS pattern');
+    return value;
+}; // types.NMTOKENS
 
 //endregion >> string
 //region >> Buffer
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#base64Binary
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-base64binary
  * @returns {Buffer}
  */
@@ -93,6 +220,7 @@ types.base64Binary = function (value) {
 }; // types.base64Binary
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#hexBinary
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-hexbinary
  * @returns {Buffer}
  */
@@ -105,6 +233,7 @@ types.hexBinary = function (value) {
 //region >> boolean
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#boolean
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-boolean
  * @returns {boolean}
  */
@@ -134,17 +263,18 @@ types.boolean = function (value) {
 //region >> number
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#decimal
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-decimal
  * @returns {number}
  */
 types.decimal = function (value) {
-    value       = types.string(value);
-    const match = /^([+-])?(\d*)(\.\d*)?$/.exec(value);
-    if (!match) throw new Error('invalid format');
+    value                                                  = types.string(value);
+    const [match, signPart, intPart, decPart, onlyDecPart] = util.decimalPattern.exec(value) || [];
+    if (!match) throw new Error('invalid decimal pattern');
     const
-        factor  = match[1] === '-' ? -1 : 1,
-        integer = parseInt(match[2] || 0),
-        decimal = parseFloat(match[3] || 0);
+        factor  = signPart === '-' ? -1 : 1,
+        integer = parseInt(intPart || 0),
+        decimal = parseFloat(decPart || onlyDecPart || 0) || 0;
     return factor * (integer + decimal);
 }; // types.decimal
 
@@ -152,6 +282,7 @@ types.decimal = function (value) {
 //region >> integer
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#integer
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-integer
  * @returns {number}
  */
@@ -161,6 +292,7 @@ types.integer = function (value) {
 }; // types.integer
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#nonNegativeInteger
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nonnegativeinteger
  * @returns {number}
  */
@@ -172,6 +304,7 @@ types.nonNegativeInteger = function (value) {
 }; // types.nonNegativeInteger
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#positiveInteger
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-positiveinteger
  * @returns {number}
  */
@@ -183,6 +316,7 @@ types.positiveInteger = function (value) {
 }; // types.positiveInteger
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#nonPositiveInteger
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nonpositiveinteger
  * @returns {number}
  */
@@ -194,6 +328,7 @@ types.nonPositiveInteger = function (value) {
 }; // types.nonPositiveInteger
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#negativeInteger
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-negativeinteger
  * @returns {number}
  */
@@ -205,6 +340,7 @@ types.negativeInteger = function (value) {
 }; // types.negativeInteger
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#long
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-long
  * @returns {number}
  */
@@ -216,6 +352,7 @@ types.long = function (value) {
 }; // types.long
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#int
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-int
  * @returns {number}
  */
@@ -227,6 +364,7 @@ types.int = function (value) {
 }; // types.int
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#short
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-short
  * @returns {number}
  */
@@ -238,6 +376,7 @@ types.short = function (value) {
 }; // types.short
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#byte
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-byte
  * @returns {number}
  */
@@ -249,6 +388,7 @@ types.byte = function (value) {
 }; // types.byte
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedLong
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedlong
  * @returns {number}
  */
@@ -260,6 +400,7 @@ types.unsignedLong = function (value) {
 }; // types.unsignedLong
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedInt
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedint
  * @returns {number}
  */
@@ -271,6 +412,7 @@ types.unsignedInt = function (value) {
 }; // types.unsignedInt
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedShort
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedshort
  * @returns {number}
  */
@@ -282,6 +424,7 @@ types.unsignedShort = function (value) {
 }; // types.unsignedShort
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedByte
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedbyte
  * @returns {number}
  */
@@ -296,6 +439,7 @@ types.unsignedByte = function (value) {
 //region >> float
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#double
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-double
  * @returns {number}
  */
@@ -316,6 +460,7 @@ types.double = function (value) {
 }; // types.double
 
 /**
+ * @see https://www.w3.org/TR/xmlschema11-2/#float
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-float
  * @returns {number}
  */
@@ -327,15 +472,122 @@ types.float = function (value) {
 //endregion >> float
 //region >> Date
 
-// TODO xs:date
-// TODO xs:dateTime
-// TODO xs:duration
-// TODO xs:gDay
-// TODO xs:gMonth
-// TODO xs:gMonthDay
-// TODO xs:gYear
-// TODO xs:gYearMonth
-// TODO xs:time
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#date
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-date
+ * @returns {string}
+ */
+types.date = function (value) {
+    value                                                       = types.string(value);
+    const [match, YYYY, MM, DD, tz_sign, tz_hh, tz_mm, utc_tag] = util.datePattern.exec(value) || [];
+    if (!match) throw new Error('invalid date pattern');
+    // TODO xs:date
+    throw new Error('not implemented');
+}; // types.date
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#time
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-time
+ * @returns {string}
+ */
+types.time = function (value) {
+    value                                                        = types.string(value);
+    const [match, hh, mm, ss_ms, tz_sign, tz_hh, tz_mm, utc_tag] = util.timePattern.exec(value) || [];
+    if (!match) throw new Error('invalid time pattern');
+    // TODO xs:time
+    throw new Error('not implemented');
+}; // types.time
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#dateTime
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-datetime
+ * @returns {string}
+ */
+types.dateTime = function (value) {
+    value                                                                      = types.string(value);
+    const [match, YYYY, MM, DD, hh, mm, ss_ms, tz_sign, tz_hh, tz_mm, utc_tag] = util.dateTimePattern.exec(value) || [];
+    if (!match) throw new Error('invalid dateTime pattern');
+    // TODO xs:dateTime
+    throw new Error('not implemented');
+}; // types.dateTime
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#gDay
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-gday
+ * @returns {string}
+ */
+types.gDay = function (value) {
+    value                                             = types.string(value);
+    const [match, DD, tz_sign, tz_hh, tz_mm, utc_tag] = util.gDayPattern.exec(value) || [];
+    if (!match) throw new Error('invalid gDay pattern');
+    // TODO xs:gDay
+    throw new Error('not implemented');
+}; // types.gDay
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#gMonth
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-gmonth
+ * @returns {string}
+ */
+types.gMonth = function (value) {
+    value                                             = types.string(value);
+    const [match, MM, tz_sign, tz_hh, tz_mm, utc_tag] = util.gMonthPattern.exec(value) || [];
+    if (!match) throw new Error('invalid gMonth pattern');
+    // TODO xs:gMonth
+    throw new Error('not implemented');
+}; // types.gMonth
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#gMonthDay
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-gmonthday
+ * @returns {string}
+ */
+types.gMonthDay = function (value) {
+    value                                                 = types.string(value);
+    const [match, MM, DD, tz_sign, tz_hh, tz_mm, utc_tag] = util.gMonthDayPattern.exec(value) || [];
+    if (!match) throw new Error('invalid gMonthDay pattern');
+    // TODO xs:gMonthDay
+    throw new Error('not implemented');
+}; // types.gMonthDay
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#gYear
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-gyear
+ * @returns {string}
+ */
+types.gYear = function (value) {
+    value                                               = types.string(value);
+    const [match, YYYY, tz_sign, tz_hh, tz_mm, utc_tag] = util.gYearPattern.exec(value) || [];
+    if (!match) throw new Error('invalid gYear pattern');
+    // TODO xs:gYear
+    throw new Error('not implemented');
+}; // types.gYear
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#gYearMonth
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-gyearmonth
+ * @returns {string}
+ */
+types.gYearMonth = function (value) {
+    value                                                   = types.string(value);
+    const [match, YYYY, MM, tz_sign, tz_hh, tz_mm, utc_tag] = util.gYearMonthPattern.exec(value) || [];
+    if (!match) throw new Error('invalid gYearMonth pattern');
+    // TODO xs:gYearMonth
+    throw new Error('not implemented');
+}; // types.gYearMonth
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#duration
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-duration
+ * @returns {string}
+ */
+types.duration = function (value) {
+    value                                            = types.string(value);
+    const [match, sign, YYYY, MM, DD, hh, mm, ss_ms] = util.durationPattern.exec(value) || [];
+    if (!match) throw new Error('invalid duration pattern');
+    // TODO xs:duration
+    throw new Error('not implemented');
+}; // types.duration
 
 //endregion >> Date
 

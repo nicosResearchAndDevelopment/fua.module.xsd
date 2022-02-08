@@ -1,6 +1,6 @@
 const
     xsd  = exports,
-    util = require('@nrd/fua.core.util');
+    util = require('./module.xsd.util.js');
 
 xsd.types = require('./module.xsd.types.js');
 
