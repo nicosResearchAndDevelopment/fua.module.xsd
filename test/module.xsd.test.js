@@ -25,7 +25,7 @@ describe('module.xsd', function () {
         expect(xsd.parseLiteral({
             '@value': '42',
             '@type':  'xsd:string'
-        })).toBe("42");
+        })).toBe('42');
     }); // xsd.parseLiteral
 
     test('xsd.analyseLiteral', function () {
@@ -77,6 +77,9 @@ describe('module.xsd', function () {
             expect(xsd.types.float('-.3')).toBe(-0.30000001192092896);
             expect(xsd.types.float('123.456789')).toBe(123.456787109375);
         });
+
+        // TODO test all types
+        // TODO test also negative cases
 
     });
 

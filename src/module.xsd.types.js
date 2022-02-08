@@ -18,7 +18,7 @@ types.string = function (value) {
             return value.toString();
         case 'object':
             if (!value) throw new Error('null value');
-            if (value instanceof Date) return value.toString();
+            if (value instanceof Date) return value.toISOString();
             if (value instanceof Buffer) return value.toString('utf8');
             if ('@value' in value) return types.string(value['@value']);
             if ('value' in value) return types.string(value.value);
@@ -481,8 +481,14 @@ types.date = function (value) {
     value                                                       = types.string(value);
     const [match, YYYY, MM, DD, tz_sign, tz_hh, tz_mm, utc_tag] = util.datePattern.exec(value) || [];
     if (!match) throw new Error('invalid date pattern');
-    // TODO xs:date
-    throw new Error('not implemented');
+    const
+        year       = parseInt(YYYY),
+        monthIndex = parseInt(MM) - 1,
+        day        = parseInt(DD),
+        hour       = tz_sign && parseInt(tz_sign + tz_hh) || 0,
+        minutes    = tz_sign && parseInt(tz_sign + tz_mm) || 0;
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes));
+    return new Date(year, monthIndex, day);
 }; // types.date
 
 /**
@@ -494,8 +500,16 @@ types.time = function (value) {
     value                                                        = types.string(value);
     const [match, hh, mm, ss_ms, tz_sign, tz_hh, tz_mm, utc_tag] = util.timePattern.exec(value) || [];
     if (!match) throw new Error('invalid time pattern');
-    // TODO xs:time
-    throw new Error('not implemented');
+    const
+        year         = 1970,
+        monthIndex   = 0,
+        day          = 1,
+        hour         = parseInt(hh) - (tz_sign && parseInt(tz_sign + tz_hh) || 0),
+        minutes      = parseInt(mm) - (tz_sign && parseInt(tz_sign + tz_mm) || 0),
+        seconds      = parseInt(ss_ms),
+        milliseconds = 1000 * (parseFloat(ss_ms) - seconds);
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes, seconds, milliseconds));
+    return new Date(year, monthIndex, day, hour, minutes, seconds, milliseconds);
 }; // types.time
 
 /**
@@ -507,8 +521,16 @@ types.dateTime = function (value) {
     value                                                                      = types.string(value);
     const [match, YYYY, MM, DD, hh, mm, ss_ms, tz_sign, tz_hh, tz_mm, utc_tag] = util.dateTimePattern.exec(value) || [];
     if (!match) throw new Error('invalid dateTime pattern');
-    // TODO xs:dateTime
-    throw new Error('not implemented');
+    const
+        year         = parseInt(YYYY),
+        monthIndex   = parseInt(MM) - 1,
+        day          = parseInt(DD),
+        hour         = parseInt(hh) - (tz_sign && parseInt(tz_sign + tz_hh) || 0),
+        minutes      = parseInt(mm) - (tz_sign && parseInt(tz_sign + tz_mm) || 0),
+        seconds      = parseInt(ss_ms),
+        milliseconds = 1000 * (parseFloat(ss_ms) - seconds);
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes, seconds, milliseconds));
+    return new Date(year, monthIndex, day, hour, minutes, seconds, milliseconds);
 }; // types.dateTime
 
 /**
@@ -520,8 +542,14 @@ types.gDay = function (value) {
     value                                             = types.string(value);
     const [match, DD, tz_sign, tz_hh, tz_mm, utc_tag] = util.gDayPattern.exec(value) || [];
     if (!match) throw new Error('invalid gDay pattern');
-    // TODO xs:gDay
-    throw new Error('not implemented');
+    const
+        year       = 1970,
+        monthIndex = 0,
+        day        = parseInt(DD),
+        hour       = tz_sign && parseInt(tz_sign + tz_hh) || 0,
+        minutes    = tz_sign && parseInt(tz_sign + tz_mm) || 0;
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes));
+    return new Date(year, monthIndex, day);
 }; // types.gDay
 
 /**
@@ -533,8 +561,14 @@ types.gMonth = function (value) {
     value                                             = types.string(value);
     const [match, MM, tz_sign, tz_hh, tz_mm, utc_tag] = util.gMonthPattern.exec(value) || [];
     if (!match) throw new Error('invalid gMonth pattern');
-    // TODO xs:gMonth
-    throw new Error('not implemented');
+    const
+        year       = 1970,
+        monthIndex = parseInt(MM) - 1,
+        day        = 1,
+        hour       = tz_sign && parseInt(tz_sign + tz_hh) || 0,
+        minutes    = tz_sign && parseInt(tz_sign + tz_mm) || 0;
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes));
+    return new Date(year, monthIndex, day);
 }; // types.gMonth
 
 /**
@@ -546,8 +580,14 @@ types.gMonthDay = function (value) {
     value                                                 = types.string(value);
     const [match, MM, DD, tz_sign, tz_hh, tz_mm, utc_tag] = util.gMonthDayPattern.exec(value) || [];
     if (!match) throw new Error('invalid gMonthDay pattern');
-    // TODO xs:gMonthDay
-    throw new Error('not implemented');
+    const
+        year       = 1970,
+        monthIndex = parseInt(MM) - 1,
+        day        = parseInt(DD),
+        hour       = tz_sign && parseInt(tz_sign + tz_hh) || 0,
+        minutes    = tz_sign && parseInt(tz_sign + tz_mm) || 0;
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes));
+    return new Date(year, monthIndex, day);
 }; // types.gMonthDay
 
 /**
@@ -559,8 +599,14 @@ types.gYear = function (value) {
     value                                               = types.string(value);
     const [match, YYYY, tz_sign, tz_hh, tz_mm, utc_tag] = util.gYearPattern.exec(value) || [];
     if (!match) throw new Error('invalid gYear pattern');
-    // TODO xs:gYear
-    throw new Error('not implemented');
+    const
+        year       = parseInt(YYYY),
+        monthIndex = 0,
+        day        = 1,
+        hour       = tz_sign && parseInt(tz_sign + tz_hh) || 0,
+        minutes    = tz_sign && parseInt(tz_sign + tz_mm) || 0;
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes));
+    return new Date(year, monthIndex, day);
 }; // types.gYear
 
 /**
@@ -572,8 +618,14 @@ types.gYearMonth = function (value) {
     value                                                   = types.string(value);
     const [match, YYYY, MM, tz_sign, tz_hh, tz_mm, utc_tag] = util.gYearMonthPattern.exec(value) || [];
     if (!match) throw new Error('invalid gYearMonth pattern');
-    // TODO xs:gYearMonth
-    throw new Error('not implemented');
+    const
+        year       = parseInt(YYYY),
+        monthIndex = parseInt(MM) - 1,
+        day        = 1,
+        hour       = tz_sign && parseInt(tz_sign + tz_hh) || 0,
+        minutes    = tz_sign && parseInt(tz_sign + tz_mm) || 0;
+    if (utc_tag || tz_sign) return new Date(Date.UTC(year, monthIndex, day, hour, minutes));
+    return new Date(year, monthIndex, day);
 }; // types.gYearMonth
 
 /**
@@ -585,8 +637,17 @@ types.duration = function (value) {
     value                                            = types.string(value);
     const [match, sign, YYYY, MM, DD, hh, mm, ss_ms] = util.durationPattern.exec(value) || [];
     if (!match) throw new Error('invalid duration pattern');
-    // TODO xs:duration
-    throw new Error('not implemented');
+    const
+        year         = 1970 + parseInt(YYYY || 0),
+        monthIndex   = parseInt(MM || 0),
+        day          = 1 + parseInt(DD || 0),
+        hour         = parseInt(hh || 0),
+        minutes      = parseInt(mm || 0),
+        seconds      = parseInt(ss_ms || 0),
+        milliseconds = 1000 * (parseFloat(ss_ms || 0) - seconds),
+        utcValue     = Date.UTC(year, monthIndex, day, hour, minutes, seconds, milliseconds),
+        signFactor   = sign === '-' ? -1 : 1;
+    return new Date(signFactor * utcValue);
 }; // types.duration
 
 //endregion >> Date
