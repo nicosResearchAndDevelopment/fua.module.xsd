@@ -1,31 +1,16 @@
 const
     types = exports;
 
-// NOTE temporal:
-// TODO xs:date
-// TODO xs:dateTime
-// TODO xs:duration
-// TODO xs:gDay
-// TODO xs:gMonth
-// TODO xs:gMonthDay
-// TODO xs:gYear
-// TODO xs:gYearMonth
-// TODO xs:time
-
-// NOTE special strings:
-// TODO xs:Name
-// TODO xs:NCName
-// TODO xs:QName
-
-// NOTE miscellaneous:
 // TODO xs:ENTITIES
 // TODO xs:ENTITY
 // TODO xs:ID
 // TODO xs:IDREF
 // TODO xs:IDREFS
+// TODO xs:NOTATION
 // TODO xs:NMTOKEN
 // TODO xs:NMTOKENS
-// TODO xs:NOTATION
+
+//region >> string
 
 /**
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-string
@@ -51,10 +36,52 @@ types.string = function (value) {
     }
 }; // types.string
 
-// TODO xs:anyURI
-// TODO xs:language
-// TODO xs:normalizedString
-// TODO xs:token
+/**
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-normalizedstring
+ * @returns {string}
+ */
+types.normalizedString = function (value) {
+    value = types.string(value);
+    return value.replace(/\s/g, ' ');
+}; // types.normalizedString
+
+/**
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-token
+ * @returns {string}
+ */
+types.token = function (value) {
+    value = types.string(value);
+    return value.replace(/\s+/g, ' ').trim();
+}; // types.token
+
+/**
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-anyuri
+ * @returns {string}
+ */
+types.anyURI = function (value) {
+    value = types.string(value);
+    if (/\s/.test(value))
+        throw new Error('contains whitespaces');
+    return value;
+}; // types.anyURI
+
+/**
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-language
+ * @returns {string}
+ */
+types.language = function (value) {
+    value = types.string(value);
+    if (!/^[a-z]{1,3}(?:-[a-z0-9]{1,8})*$/i.test(value))
+        throw new Error('invalid pattern');
+    return value;
+}; // types.language
+
+// TODO xs:Name
+// TODO xs:QName
+// TODO xs:NCName
+
+//endregion >> string
+//region >> Buffer
 
 /**
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-base64binary
@@ -73,6 +100,9 @@ types.hexBinary = function (value) {
     value = types.string(value);
     return Buffer.from(value, 'hex');
 }; // types.hexBinary
+
+//endregion >> Buffer
+//region >> boolean
 
 /**
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-boolean
@@ -100,6 +130,9 @@ types.boolean = function (value) {
     }
 }; // types.boolean
 
+//endregion >> boolean
+//region >> number
+
 /**
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-decimal
  * @returns {number}
@@ -114,6 +147,9 @@ types.decimal = function (value) {
         decimal = parseFloat(match[3] || 0);
     return factor * (integer + decimal);
 }; // types.decimal
+
+//endregion >> number
+//region >> integer
 
 /**
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-integer
@@ -256,6 +292,9 @@ types.unsignedByte = function (value) {
     return integerValue;
 }; // types.unsignedByte
 
+//endregion >> integer
+//region >> float
+
 /**
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-double
  * @returns {number}
@@ -284,5 +323,20 @@ types.float = function (value) {
     const doubleValue = types.double(value);
     return Math.fround(doubleValue);
 }; // types.float
+
+//endregion >> float
+//region >> Date
+
+// TODO xs:date
+// TODO xs:dateTime
+// TODO xs:duration
+// TODO xs:gDay
+// TODO xs:gMonth
+// TODO xs:gMonthDay
+// TODO xs:gYear
+// TODO xs:gYearMonth
+// TODO xs:time
+
+//endregion >> Date
 
 module.exports = Object.freeze(types);
