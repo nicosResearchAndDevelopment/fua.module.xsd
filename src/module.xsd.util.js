@@ -5,6 +5,15 @@ const
         assert: _util.Assert('module.xsd')
     };
 
+util.DatatypeError = _util.createErrorClass('DatatypeError', 'FUA_ERROR_XSD_DATATYPE');
+util.PatternError  = _util.createErrorClass('PatternError', 'FUA_ERROR_XSD_PATTERN');
+util.RangeError    = _util.createErrorClass('RangeError', 'FUA_ERROR_XSD_RANGE');
+
+// util.minInteger         = Number.MIN_SAFE_INTEGER;
+// util.minIntegerAsBigInt = BigInt(util.minInteger);
+// util.maxInteger         = Number.MAX_SAFE_INTEGER;
+// util.maxIntegerAsBigInt = BigInt(util.maxInteger);
+
 util.languagePattern = /^[a-z]{1,3}(?:-[a-z0-9]{1,8})*$/i;
 util.anyURIPattern   = /^\S*$/;
 // https://tools.ietf.org/html/rfc3987#section-2.2

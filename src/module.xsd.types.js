@@ -212,21 +212,37 @@ types.NMTOKENS = function (value) {
 /**
  * @see https://www.w3.org/TR/xmlschema11-2/#base64Binary
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-base64binary
+ * @param {string|Buffer} value
  * @returns {Buffer}
  */
 types.base64Binary = function (value) {
-    value = types.string(value);
-    return Buffer.from(value, 'base64');
+    if (typeof value === 'string') {
+        return Buffer.from(value, 'base64');
+    }
+
+    if (value instanceof Buffer) {
+        return value;
+    }
+
+    throw new util.DatatypeError('expected string or Buffer');
 }; // types.base64Binary
 
 /**
  * @see https://www.w3.org/TR/xmlschema11-2/#hexBinary
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-hexbinary
+ * @param {string|Buffer} value
  * @returns {Buffer}
  */
 types.hexBinary = function (value) {
-    value = types.string(value);
-    return Buffer.from(value, 'hex');
+    if (typeof value === 'string') {
+        return Buffer.from(value, 'hex');
+    }
+
+    if (value instanceof Buffer) {
+        return value;
+    }
+
+    throw new util.DatatypeError('expected string or Buffer');
 }; // types.hexBinary
 
 //endregion >> Buffer
@@ -235,20 +251,27 @@ types.hexBinary = function (value) {
 /**
  * @see https://www.w3.org/TR/xmlschema11-2/#boolean
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-boolean
+ * @param {"true"|"false"|"1"|"0"|boolean|1|0} value
  * @returns {boolean}
  */
 types.boolean = function (value) {
-    value = types.string(value).toLowerCase();
-    switch (value) {
-        case 'true':
-        case '1':
-            return true;
-        case 'false':
-        case '0':
-            return false;
-        default:
-            throw new Error('invalid value');
+    if (typeof value === 'string') {
+        if (value === 'true' || value === '1') return true;
+        if (value === 'false' || value === '0') return false;
+        throw new util.PatternError('expected "true", "false", "1" or "0" for string values');
     }
+
+    if (typeof value === 'number') {
+        if (value === 1) return true;
+        if (value === 0) return false;
+        throw new util.RangeError('expected 1 or 0 for number values');
+    }
+
+    if (typeof value === 'boolean') {
+        return value;
+    }
+
+    throw new util.DatatypeError('expected string, number or boolean');
 }; // types.boolean
 
 //endregion >> boolean
@@ -257,17 +280,30 @@ types.boolean = function (value) {
 /**
  * @see https://www.w3.org/TR/xmlschema11-2/#decimal
  * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-decimal
+ * @param {string|number} value
  * @returns {number}
  */
 types.decimal = function (value) {
-    value                                                  = types.string(value);
-    const [match, signPart, intPart, decPart, onlyDecPart] = util.decimalPattern.exec(value) || [];
-    if (!match) throw new Error('invalid decimal pattern');
-    const
-        factor  = signPart === '-' ? -1 : 1,
-        integer = parseInt(intPart || 0),
-        decimal = parseFloat(decPart || onlyDecPart || 0) || 0;
-    return factor * (integer + decimal);
+    if (typeof value === 'string') {
+        const [match, signPart, intPart, decPart, onlyDecPart] = util.decimalPattern.exec(value) || [];
+        if (!match) throw new util.PatternError('expected decimal pattern for string values');
+        const
+            factor  = signPart === '-' ? -1 : 1,
+            integer = parseInt(intPart || 0),
+            decimal = parseFloat(decPart || onlyDecPart || 0) || 0,
+            result  = factor * (integer + decimal);
+        if (result === -Infinity || result === Infinity || isNaN(result))
+            throw new util.RangeError('expected decimals for string values');
+        return result;
+    }
+
+    if (typeof value === 'number') {
+        if (value === -Infinity || value === Infinity || isNaN(value))
+            throw new util.RangeError('expected decimals for number values');
+        return value;
+    }
+
+    throw new util.DatatypeError('invalid decimal type');
 }; // types.decimal
 
 //endregion >> number
@@ -279,8 +315,18 @@ types.decimal = function (value) {
  * @returns {number}
  */
 types.integer = function (value) {
-    value = types.string(value);
-    return parseInt(value);
+    if (typeof value === 'string') {
+        const result = parseInt(value);
+        if (!Number.isInteger(result)) throw new Error('invalid integer value');
+        return result;
+    }
+
+    if (typeof value === 'number') {
+        if (!Number.isInteger(value)) throw new Error('invalid integer value');
+        return value;
+    }
+
+    throw new Error('invalid integer type');
 }; // types.integer
 
 /**
@@ -340,6 +386,7 @@ types.long = function (value) {
     const integerValue = types.integer(value);
     if (integerValue < -9223372036854775808 || integerValue > 9223372036854775807)
         throw new Error('out of range');
+    console.log(integerValue);
     return integerValue;
 }; // types.long
 
