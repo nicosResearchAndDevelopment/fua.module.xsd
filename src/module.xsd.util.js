@@ -14,9 +14,9 @@ util.RangeError    = _util.createErrorClass('RangeError', 'FUA_ERROR_XSD_RANGE')
 // util.maxInteger         = Number.MAX_SAFE_INTEGER;
 // util.maxIntegerAsBigInt = BigInt(util.maxInteger);
 
-util.decimalPattern = /^([+-])?(?:(\d+)(\.\d*)?|(\.\d+))$/;
-// util.decimalPattern = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/;
+util.decimalPattern = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/;
 util.integerPattern = /^[+-]?\d+$/;
+util.floatPattern   = /^(?:NaN|-?INF|[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)$/;
 
 util.languagePattern = /^[a-z]{1,3}(?:-[a-z0-9]{1,8})*$/i;
 util.anyURIPattern   = /^\S*$/;
@@ -37,8 +37,8 @@ const
         + Char(0x2C00) + '-' + Char(0x2FEF)
         + Char(0x3001) + '-' + Char(0xD7FF)
         + Char(0xF900) + '-' + Char(0xFDCF)
-        + Char(0xFDF0) + '-' + Char(0xFFFD)
-        + Char(0x10000) + '-' + Char(0xEFFFF),
+        + Char(0xFDF0) + '-' + Char(0xFFFD),
+    // + Char(0x10000) + '-' + Char(0xEFFFF), // buggy
     NameCharPatternString        = NameStartCharPatternString
         + '\-.0-9' + Char(0xB7)
         + Char(0x0300) + '-' + Char(0x036F)
@@ -47,7 +47,8 @@ const
     NCNameCharPatternString      = NameCharPatternString.substr(1);
 
 // https://www.w3.org/TR/xml11/#sec-common-syn
-util.NamePattern     = new RegExp(`^[${NameStartCharPatternString}][${NameCharPatternString}]*$`);
+util.NamePattern = new RegExp(`^[${NameStartCharPatternString}][${NameCharPatternString}]*$`);
+console.log(util.NamePattern.toString());
 util.NamesPattern    = new RegExp(`^[${NameStartCharPatternString}][${NameCharPatternString}]*(?: [${NameStartCharPatternString}][${NameCharPatternString}]*)*$`);
 util.NmtokenPattern  = new RegExp(`^[${NameCharPatternString}]+$`);
 util.NmtokensPattern = new RegExp(`^[${NameCharPatternString}]+(?: [${NameCharPatternString}]+)*$`);

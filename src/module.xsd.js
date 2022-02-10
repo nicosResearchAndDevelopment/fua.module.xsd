@@ -24,7 +24,16 @@ xsd.createLiteral = function (value) {
                 '@type':  'xsd:float',
                 '@value': value === Infinity ? 'INF' : value === -Infinity ? '-INF' : 'NaN'
             };
+        case 'bigint':
+            return {
+                '@type':  'xsd:integer',
+                '@value': value.toString()
+            };
         case 'string':
+            // if (util.NmtokenPattern.test(value)) return {
+            //     '@type':  'xsd:NMTOKEN',
+            //     '@value': value
+            // };
             return {
                 '@type':  'xsd:string',
                 '@value': value
@@ -38,7 +47,13 @@ xsd.createLiteral = function (value) {
                 '@type':  'xsd:dateTime',
                 '@value': value.toISOString()
             };
-        default:
+        // if (util.isArray(value)) {
+        //     if (value.every(val => util.NmtokenPattern.test(val))) return {
+        //         '@type':  'xsd:NMTOKENS',
+        //         '@value': value.join(' ')
+        //     };
+        // }
+        default: // REM it is intentional that the cases does not break and case 'object' falls through into default
             throw util.DatatypeError('expected boolean, number, string, Buffer or Date');
     }
 }; // xsd.createLiteral
@@ -74,8 +89,6 @@ xsd.analyseLiteral = function (literal) {
         if (result.nativeValue instanceof Date) result.nativeType = 'Date';
         if (result.nativeValue instanceof Buffer) result.nativeType = 'Buffer';
     }
-
-    result.stringValue = xsd.types.string(result.nativeValue);
 
     return result;
 }; // xsd.analyseLiteral

@@ -498,8 +498,8 @@ describe('module.xsd', function () {
             expect(xsd_short('-0000000000000000000005')).toBe(-5);
             expect(xsd_short('32767')).toBe(32767);
 
-            expect(() => xsd_short('32768')).toThrow(32768);
-            expect(() => xsd_short('1.')).toThrow(1.);
+            expect(() => xsd_short('32768')).toThrow();
+            expect(() => xsd_short('1.')).toThrow();
 
             expect(xsd_short(42)).toBe(42);
             expect(xsd_short(-123)).toBe(-123);
