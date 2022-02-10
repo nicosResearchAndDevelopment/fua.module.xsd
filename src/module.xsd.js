@@ -1,8 +1,47 @@
 const
     xsd  = exports,
-    util = require('@nrd/fua.core.util');
+    util = require('./module.xsd.util.js');
 
 xsd.types = require('./module.xsd.types.js');
+
+xsd.createLiteral = function (value) {
+    switch (typeof value) {
+        case 'boolean':
+            return {
+                '@type':  'xsd:boolean',
+                '@value': value ? 'true' : 'false'
+            };
+        case 'number':
+            if (util.isInteger(value)) return {
+                '@type':  'xsd:integer',
+                '@value': value.toString()
+            };
+            if (util.isFiniteNumber(value)) return {
+                '@type':  Math.fround(value) === value ? 'xsd:float' : 'xsd:double',
+                '@value': value.toString()
+            };
+            return {
+                '@type':  'xsd:float',
+                '@value': value === Infinity ? 'INF' : value === -Infinity ? '-INF' : 'NaN'
+            };
+        case 'string':
+            return {
+                '@type':  'xsd:string',
+                '@value': value
+            };
+        case 'object':
+            if (util.isBuffer(value)) return {
+                '@type':  'xsd:base64Binary',
+                '@value': value.toString('base64')
+            };
+            if (util.isDate(value)) return {
+                '@type':  'xsd:dateTime',
+                '@value': value.toISOString()
+            };
+        default:
+            throw util.DatatypeError('expected boolean, number, string, Buffer or Date');
+    }
+}; // xsd.createLiteral
 
 xsd.parseLiteral = function (literal) {
     let
