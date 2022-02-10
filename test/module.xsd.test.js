@@ -5,6 +5,27 @@ const
 
 describe('module.xsd', function () {
 
+    test('xsd.createLiteral', function () {
+        expect(xsd.createLiteral(0)).toMatchObject({
+            '@type':  'xsd:integer',
+            '@value': '0'
+        });
+        expect(xsd.createLiteral(false)).toMatchObject({
+            '@type':  'xsd:boolean',
+            '@value': 'false'
+        });
+        expect(xsd.createLiteral('')).toMatchObject({
+            '@type':  'xsd:string',
+            '@value': ''
+        });
+        expect(xsd.createLiteral(NaN)).toMatchObject({
+            '@type':  'xsd:float',
+            '@value': 'NaN'
+        });
+        expect(() => xsd.createLiteral()).toThrow();
+        expect(() => xsd.createLiteral(null)).toThrow();
+    });
+
     test('xsd.parseLiteral', function () {
         expect(xsd.parseLiteral({
             '@value': 'true',
@@ -30,7 +51,7 @@ describe('module.xsd', function () {
 
     test('xsd.analyseLiteral', function () {
         console.log(xsd.analyseLiteral({
-            '@value': 'False',
+            '@value': 'false',
             '@type':  'boolean'
         }));
         console.log(xsd.analyseLiteral({

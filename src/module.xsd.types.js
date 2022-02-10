@@ -2,6 +2,270 @@ const
     types = exports,
     util  = require('./module.xsd.util.js');
 
+//region >> boolean
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#boolean
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-boolean
+ * @param {"true"|"false"|"1"|"0"|boolean|1|0} value
+ * @returns {boolean}
+ */
+types.boolean = function (value) {
+    if (typeof value === 'string') {
+        if (value === 'true' || value === '1') return true;
+        if (value === 'false' || value === '0') return false;
+        throw util.PatternError('expected "true", "false", "1" or "0" for string values');
+    }
+
+    if (typeof value === 'number') {
+        if (value === 1) return true;
+        if (value === 0) return false;
+        throw util.RangeError('expected 1 or 0 for number values');
+    }
+
+    if (typeof value === 'boolean') {
+        return value;
+    }
+
+    throw util.DatatypeError('expected string, number or boolean');
+}; // types.boolean
+
+//endregion >> boolean
+//region >> number
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#decimal
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-decimal
+ * @param {string|number} value
+ * @returns {number}
+ */
+types.decimal = function (value) {
+    if (typeof value === 'string') {
+        const [match, signPart, intPart, decPart, onlyDecPart] = util.decimalPattern.exec(value) || [];
+        if (!match) throw util.PatternError('expected decimal pattern for string values');
+        const
+            factor  = signPart === '-' ? -1 : 1,
+            integer = parseInt(intPart || 0),
+            decimal = parseFloat(decPart || onlyDecPart || 0) || 0,
+            result  = factor * (integer + decimal);
+        if (result === -Infinity || result === Infinity || isNaN(result))
+            throw util.RangeError('expected decimals for string values');
+        return result;
+    }
+
+    if (typeof value === 'number') {
+        if (value === -Infinity || value === Infinity || isNaN(value))
+            throw util.RangeError('expected decimals for number values');
+        return value;
+    }
+
+    throw util.DatatypeError('invalid decimal type');
+}; // types.decimal
+
+//region >> number / float
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#float
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-float
+ * @returns {number}
+ */
+types.float = function (value) {
+    const doubleValue = types.double(value);
+    return Math.fround(doubleValue);
+}; // types.float
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#double
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-double
+ * @returns {number}
+ */
+types.double = function (value) {
+    value = types.string(value).toLowerCase();
+    switch (value) {
+        case 'inf':
+        case 'infinity':
+            return Infinity;
+        case '-inf':
+        case '-infinity':
+            return -Infinity;
+        case 'nan':
+            return NaN;
+        default:
+            return parseFloat(value);
+    }
+}; // types.double
+
+//endregion >> number / float
+//region >> number / integer
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#integer
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-integer
+ * @returns {number}
+ */
+types.integer = function (value) {
+    if (typeof value === 'string') {
+        const result = parseInt(value);
+        if (!Number.isInteger(result)) throw new Error('invalid integer value');
+        return result;
+    }
+
+    if (typeof value === 'number') {
+        if (!Number.isInteger(value)) throw new Error('invalid integer value');
+        return value;
+    }
+
+    throw new Error('invalid integer type');
+}; // types.integer
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#nonNegativeInteger
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nonnegativeinteger
+ * @returns {number}
+ */
+types.nonNegativeInteger = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < 0)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.nonNegativeInteger
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#positiveInteger
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-positiveinteger
+ * @returns {number}
+ */
+types.positiveInteger = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue <= 0)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.positiveInteger
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#nonPositiveInteger
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nonpositiveinteger
+ * @returns {number}
+ */
+types.nonPositiveInteger = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue > 0)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.nonPositiveInteger
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#negativeInteger
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-negativeinteger
+ * @returns {number}
+ */
+types.negativeInteger = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue >= 0)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.negativeInteger
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#long
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-long
+ * @returns {number}
+ */
+types.long = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < -9223372036854775808 || integerValue > 9223372036854775807)
+        throw new Error('out of range');
+    console.log(integerValue);
+    return integerValue;
+}; // types.long
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#int
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-int
+ * @returns {number}
+ */
+types.int = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < -2147483648 || integerValue > 2147483647)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.int
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#short
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-short
+ * @returns {number}
+ */
+types.short = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < -32768 || integerValue > 32767)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.short
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#byte
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-byte
+ * @returns {number}
+ */
+types.byte = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < -128 || integerValue > 127)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.byte
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedLong
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedlong
+ * @returns {number}
+ */
+types.unsignedLong = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < 0 || integerValue > 18446744073709551615)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.unsignedLong
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedInt
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedint
+ * @returns {number}
+ */
+types.unsignedInt = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < 0 || integerValue > 4294967295)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.unsignedInt
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedShort
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedshort
+ * @returns {number}
+ */
+types.unsignedShort = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < 0 || integerValue > 65535)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.unsignedShort
+
+/**
+ * @see https://www.w3.org/TR/xmlschema11-2/#unsignedByte
+ * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedbyte
+ * @returns {number}
+ */
+types.unsignedByte = function (value) {
+    const integerValue = types.integer(value);
+    if (integerValue < 0 || integerValue > 255)
+        throw new Error('out of range');
+    return integerValue;
+}; // types.unsignedByte
+
+//endregion >> number / integer
+
+//endregion >> number
 //region >> string
 
 /**
@@ -224,7 +488,7 @@ types.base64Binary = function (value) {
         return value;
     }
 
-    throw new util.DatatypeError('expected string or Buffer');
+    throw util.DatatypeError('expected string or Buffer');
 }; // types.base64Binary
 
 /**
@@ -242,273 +506,10 @@ types.hexBinary = function (value) {
         return value;
     }
 
-    throw new util.DatatypeError('expected string or Buffer');
+    throw util.DatatypeError('expected string or Buffer');
 }; // types.hexBinary
 
 //endregion >> Buffer
-//region >> boolean
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#boolean
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-boolean
- * @param {"true"|"false"|"1"|"0"|boolean|1|0} value
- * @returns {boolean}
- */
-types.boolean = function (value) {
-    if (typeof value === 'string') {
-        if (value === 'true' || value === '1') return true;
-        if (value === 'false' || value === '0') return false;
-        throw new util.PatternError('expected "true", "false", "1" or "0" for string values');
-    }
-
-    if (typeof value === 'number') {
-        if (value === 1) return true;
-        if (value === 0) return false;
-        throw new util.RangeError('expected 1 or 0 for number values');
-    }
-
-    if (typeof value === 'boolean') {
-        return value;
-    }
-
-    throw new util.DatatypeError('expected string, number or boolean');
-}; // types.boolean
-
-//endregion >> boolean
-//region >> number
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#decimal
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-decimal
- * @param {string|number} value
- * @returns {number}
- */
-types.decimal = function (value) {
-    if (typeof value === 'string') {
-        const [match, signPart, intPart, decPart, onlyDecPart] = util.decimalPattern.exec(value) || [];
-        if (!match) throw new util.PatternError('expected decimal pattern for string values');
-        const
-            factor  = signPart === '-' ? -1 : 1,
-            integer = parseInt(intPart || 0),
-            decimal = parseFloat(decPart || onlyDecPart || 0) || 0,
-            result  = factor * (integer + decimal);
-        if (result === -Infinity || result === Infinity || isNaN(result))
-            throw new util.RangeError('expected decimals for string values');
-        return result;
-    }
-
-    if (typeof value === 'number') {
-        if (value === -Infinity || value === Infinity || isNaN(value))
-            throw new util.RangeError('expected decimals for number values');
-        return value;
-    }
-
-    throw new util.DatatypeError('invalid decimal type');
-}; // types.decimal
-
-//endregion >> number
-//region >> integer
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#integer
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-integer
- * @returns {number}
- */
-types.integer = function (value) {
-    if (typeof value === 'string') {
-        const result = parseInt(value);
-        if (!Number.isInteger(result)) throw new Error('invalid integer value');
-        return result;
-    }
-
-    if (typeof value === 'number') {
-        if (!Number.isInteger(value)) throw new Error('invalid integer value');
-        return value;
-    }
-
-    throw new Error('invalid integer type');
-}; // types.integer
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#nonNegativeInteger
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nonnegativeinteger
- * @returns {number}
- */
-types.nonNegativeInteger = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < 0)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.nonNegativeInteger
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#positiveInteger
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-positiveinteger
- * @returns {number}
- */
-types.positiveInteger = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue <= 0)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.positiveInteger
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#nonPositiveInteger
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-nonpositiveinteger
- * @returns {number}
- */
-types.nonPositiveInteger = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue > 0)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.nonPositiveInteger
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#negativeInteger
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-negativeinteger
- * @returns {number}
- */
-types.negativeInteger = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue >= 0)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.negativeInteger
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#long
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-long
- * @returns {number}
- */
-types.long = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < -9223372036854775808 || integerValue > 9223372036854775807)
-        throw new Error('out of range');
-    console.log(integerValue);
-    return integerValue;
-}; // types.long
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#int
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-int
- * @returns {number}
- */
-types.int = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < -2147483648 || integerValue > 2147483647)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.int
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#short
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-short
- * @returns {number}
- */
-types.short = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < -32768 || integerValue > 32767)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.short
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#byte
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-byte
- * @returns {number}
- */
-types.byte = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < -128 || integerValue > 127)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.byte
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#unsignedLong
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedlong
- * @returns {number}
- */
-types.unsignedLong = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < 0 || integerValue > 18446744073709551615)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.unsignedLong
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#unsignedInt
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedint
- * @returns {number}
- */
-types.unsignedInt = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < 0 || integerValue > 4294967295)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.unsignedInt
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#unsignedShort
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedshort
- * @returns {number}
- */
-types.unsignedShort = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < 0 || integerValue > 65535)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.unsignedShort
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#unsignedByte
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-unsignedbyte
- * @returns {number}
- */
-types.unsignedByte = function (value) {
-    const integerValue = types.integer(value);
-    if (integerValue < 0 || integerValue > 255)
-        throw new Error('out of range');
-    return integerValue;
-}; // types.unsignedByte
-
-//endregion >> integer
-//region >> float
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#double
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-double
- * @returns {number}
- */
-types.double = function (value) {
-    value = types.string(value).toLowerCase();
-    switch (value) {
-        case 'inf':
-        case 'infinity':
-            return Infinity;
-        case '-inf':
-        case '-infinity':
-            return -Infinity;
-        case 'nan':
-            return NaN;
-        default:
-            return parseFloat(value);
-    }
-}; // types.double
-
-/**
- * @see https://www.w3.org/TR/xmlschema11-2/#float
- * @see https://www.data2type.de/xml-xslt-xslfo/xml-schema/datentypen-referenz/xs-float
- * @returns {number}
- */
-types.float = function (value) {
-    const doubleValue = types.double(value);
-    return Math.fround(doubleValue);
-}; // types.float
-
-//endregion >> float
 //region >> Date
 
 /**
