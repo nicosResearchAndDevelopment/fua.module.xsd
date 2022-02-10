@@ -14,6 +14,10 @@ util.RangeError    = _util.createErrorClass('RangeError', 'FUA_ERROR_XSD_RANGE')
 // util.maxInteger         = Number.MAX_SAFE_INTEGER;
 // util.maxIntegerAsBigInt = BigInt(util.maxInteger);
 
+util.decimalPattern = /^([+-])?(?:(\d+)(\.\d*)?|(\.\d+))$/;
+// util.decimalPattern = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/;
+util.integerPattern = /^[+-]?\d+$/;
+
 util.languagePattern = /^[a-z]{1,3}(?:-[a-z0-9]{1,8})*$/i;
 util.anyURIPattern   = /^\S*$/;
 // https://tools.ietf.org/html/rfc3987#section-2.2
@@ -52,8 +56,6 @@ util.NCNamePattern   = new RegExp(`^[${NCNameStartCharPatternString}][${NCNameCh
 util.NCNamesPattern  = new RegExp(`^[${NCNameStartCharPatternString}][${NCNameCharPatternString}]* (?: [${NCNameStartCharPatternString}][${NCNameCharPatternString}]*)*$`);
 // https://www.w3.org/TR/xml-names11/#ns-qualnames
 util.QNamePattern    = new RegExp(`^[${NCNameStartCharPatternString}][${NCNameCharPatternString}]*(:[${NCNameStartCharPatternString}][${NCNameCharPatternString}]*)?$`);
-
-util.decimalPattern = /^([+-])?(?:(\d+)(\.\d*)?|(\.\d+))$/;
 
 util.datePattern       = /^(-?[1-9][0-9]*)-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])(?:([+-])(1[0-2]|0[0-9]):([0-5][0-9])|(Z))?$/;
 util.timePattern       = /^(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9](?:\.[0-9]+)?)(?:([+-])(1[0-2]|0[0-9]):([0-5][0-9])|(Z))?$/;

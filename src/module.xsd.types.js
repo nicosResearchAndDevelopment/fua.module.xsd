@@ -59,7 +59,7 @@ types.decimal = function (value) {
         return value;
     }
 
-    throw util.DatatypeError('invalid decimal type');
+    throw util.DatatypeError('expected string or number');
 }; // types.decimal
 
 //region >> number / float
@@ -105,17 +105,21 @@ types.double = function (value) {
  */
 types.integer = function (value) {
     if (typeof value === 'string') {
+        if (!util.integerPattern.test(value))
+            throw util.PatternError('expected integer pattern for string values');
         const result = parseInt(value);
-        if (!Number.isInteger(result)) throw new Error('invalid integer value');
+        if (!Number.isInteger(result))
+            throw util.RangeError('expected integers for string values');
         return result;
     }
 
     if (typeof value === 'number') {
-        if (!Number.isInteger(value)) throw new Error('invalid integer value');
+        if (!Number.isInteger(value))
+            throw util.RangeError('expected integers for number values');
         return value;
     }
 
-    throw new Error('invalid integer type');
+    throw util.DatatypeError('expected string or number');
 }; // types.integer
 
 /**
