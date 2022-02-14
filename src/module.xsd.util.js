@@ -48,7 +48,6 @@ const
 
 // https://www.w3.org/TR/xml11/#sec-common-syn
 util.NamePattern = new RegExp(`^[${NameStartCharPatternString}][${NameCharPatternString}]*$`);
-console.log(util.NamePattern.toString());
 util.NamesPattern    = new RegExp(`^[${NameStartCharPatternString}][${NameCharPatternString}]*(?: [${NameStartCharPatternString}][${NameCharPatternString}]*)*$`);
 util.NmtokenPattern  = new RegExp(`^[${NameCharPatternString}]+$`);
 util.NmtokensPattern = new RegExp(`^[${NameCharPatternString}]+(?: [${NameCharPatternString}]+)*$`);
