@@ -1,13 +1,3 @@
-exports._Facet    = require('./facets/_Facet.js');
-exports._Datatype = require('./datatypes/_Datatype.js');
-
-// Fundamental Facets: https://www.w3.org/TR/xmlschema11-2/#rf-fund-facets
-
-exports.ordered     = require('./facets/ordered.js');
-exports.bounded     = require('./facets/bounded.js');
-exports.cardinality = require('./facets/cardinality.js');
-exports.numeric     = require('./facets/numeric.js');
-
 // Constraining Facets: https://www.w3.org/TR/xmlschema11-2/#rf-facets
 
 exports.length           = require('./facets/length.js');
@@ -24,6 +14,11 @@ exports.totalDigits      = require('./facets/totalDigits.js');
 exports.fractionDigits   = require('./facets/fractionDigits.js');
 exports.Assertions       = require('./facets/Assertions.js');
 exports.explicitTimezone = require('./facets/explicitTimezone.js');
+
+// Special Datatypes: https://www.w3.org/TR/xmlschema11-2/#special-datatypes
+
+exports.anyType       = require('./datatypes/anyType.js');
+exports.anySimpleType = require('./datatypes/anySimpleType.js');
 
 // Primitive Datatypes: https://www.w3.org/TR/xmlschema11-2/#built-in-primitive-datatypes
 
@@ -47,7 +42,7 @@ exports.anyURI       = require('./datatypes/anyURI.js');
 exports.QName        = require('./datatypes/QName.js');
 exports.NOTATION     = require('./datatypes/NOTATION.js');
 
-// Other Built-in Datatypes: https://www.w3.org/TR/xmlschema11-2/#ordinary-built-ins
+// Other Datatypes: https://www.w3.org/TR/xmlschema11-2/#ordinary-built-ins
 
 exports.normalizedString   = require('./datatypes/normalizedString.js');
 exports.token              = require('./datatypes/token.js');
