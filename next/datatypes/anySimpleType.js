@@ -9,22 +9,26 @@ class anySimpleType extends model.anyType {
         super(value);
     }
 
-    set value(value) {
-        if (!util.isString(value)) throw new Error('expected value to be a string');
-        super.value = value;
-    }
+    // get value() {
+    //     return super.value;
+    // }
+    //
+    // set value(value) {
+    //     if (!util.isString(value)) throw new Error('expected value to be a string');
+    //     super.value = value;
+    // }
 
     valueOf() {
-        return super.value;
+        return util.isPrimitive(this.value) ? this.value : this.toString();
     }
 
     toString() {
-        return super.value;
+        return '' + this.value;
     }
 
     toJSON() {
         const result     = super.toJSON();
-        result['@value'] = super.value;
+        result['@value'] = this.toString();
         return result;
     }
 

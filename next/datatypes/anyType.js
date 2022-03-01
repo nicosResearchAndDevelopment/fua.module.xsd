@@ -5,69 +5,7 @@ const
 class anyType {
 
     static get id() {
-        return this.name;
-    }
-
-    static from(param) {
-        if (param instanceof this) return param;
-        if (param instanceof anyType)
-            throw new Error('expected param to be an instance of ' + this.id + ', but got instance of ' + param.type);
-        if (this !== anyType) return new this(param);
-        if (!util.isObject(param) || !util.isString(param['@type']))
-            throw new Error('expected param @type to be a string');
-        switch (util.isObject(param) && param['@type'] || '') {
-            case util.xsdIRI.string:
-            case util.xsdURI.string:
-                return new model.string(param);
-            // boolean
-            // decimal
-            // float
-            // double
-            // duration
-            // dateTime
-            // time
-            // date
-            // gYearMonth
-            // gYear
-            // gMonthDay
-            // gDay
-            // gMonth
-            // hexBinary
-            // base64Binary
-            // anyURI
-            // QName
-            // NOTATION
-            // normalizedString
-            // token
-            // language
-            // NMTOKEN
-            // NMTOKENS
-            // Name
-            // NCName
-            // ID
-            // IDREF
-            // IDREFS
-            // ENTITY
-            // ENTITIES
-            // integer
-            // nonPositiveInteger
-            // negativeInteger
-            // long
-            // int
-            // short
-            // byte
-            // nonNegativeInteger
-            // unsignedLong
-            // unsignedInt
-            // unsignedShort
-            // unsignedByte
-            // positiveInteger
-            // yearMonthDuration
-            // dayTimeDuration
-            // dateTimeStamp
-            default:
-                return new anyType(param);
-        }
+        return util.xsdIRI(this.name);
     }
 
     #datatype = null;
@@ -92,7 +30,7 @@ class anyType {
     }
 
     toJSON() {
-        return {'@type': util.xsdIRI(this.#datatype.id)};
+        return {'@type': this.#datatype.id};
     }
 
 }

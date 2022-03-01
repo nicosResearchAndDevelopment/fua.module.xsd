@@ -7,6 +7,10 @@ const
         xsdURI: (prop) => 'http://www.w3.org/2001/XMLSchema#' + prop
     };
 
+util.facet = {
+    whiteSpace: Symbol('whiteSpace')
+};
+
 util.xsdIRI.anyType            = util.xsdIRI('anyType');
 util.xsdIRI.anySimpleType      = util.xsdIRI('anySimpleType');
 util.xsdIRI.anyAtomicType      = util.xsdIRI('anyAtomicType');
