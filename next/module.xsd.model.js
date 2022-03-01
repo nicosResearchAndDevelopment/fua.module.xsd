@@ -19,6 +19,7 @@ exports.explicitTimezone = require('./facets/explicitTimezone.js');
 
 exports.anyType       = require('./datatypes/anyType.js');
 exports.anySimpleType = require('./datatypes/anySimpleType.js');
+exports.anyAtomicType = require('./datatypes/anyAtomicType.js');
 
 // Primitive Datatypes: https://www.w3.org/TR/xmlschema11-2/#built-in-primitive-datatypes
 
