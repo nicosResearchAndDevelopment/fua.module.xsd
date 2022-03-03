@@ -1,11 +1,16 @@
 const
-    _util = require('@nrd/fua.core.util'),
-    util  = {
+    _util         = require('@nrd/fua.core.util'),
+    util          = {
         ..._util,
         assert: _util.Assert('module.xsd'),
         xsdIRI: (prop) => 'xsd:' + prop,
         xsdURI: (prop) => 'http://www.w3.org/2001/XMLSchema#' + prop
-    };
+    },
+    DecimalFormat = new Intl.NumberFormat('en', {style: 'decimal', useGrouping: false});
+
+util.decimalToString = function (value) {
+    return DecimalFormat.format(value);
+}
 
 util.facet = {
     whiteSpace: Symbol('whiteSpace')
