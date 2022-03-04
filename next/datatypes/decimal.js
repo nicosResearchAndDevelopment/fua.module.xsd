@@ -12,6 +12,14 @@ class decimal extends model.anySimpleType {
     #fracPart   = zero;
     #fracLength = 0;
 
+    constructor(value) {
+        super(value);
+        this.#negative   = false;
+        this.#intPart    = zero;
+        this.#fracPart   = zero;
+        this.#fracLength = 0;
+    }
+
     get value() {
         return super.value;
     }

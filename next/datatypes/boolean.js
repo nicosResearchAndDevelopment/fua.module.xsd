@@ -9,17 +9,24 @@ class boolean extends model.anySimpleType {
     }
 
     set value(value) {
-        if (util.isString(value)) {
-            super.value = Buffer.from(value, 'base64');
-        } else if (util.isBoolean(value)) {
-            super.value = value;
-        } else {
-            throw new Error('expected value to be a string or a boolean');
+        switch (value) {
+            case true:
+            case 'true':
+            case '1':
+                super.value = true;
+                break;
+            case false:
+            case 'false':
+            case '0':
+                super.value = false;
+                break;
+            default:
+                throw new Error('expected value to be a boolean or a boolean string');
         }
     }
 
     toString() {
-        return super.value.toString('base64');
+        return super.value.toString();
     }
 
 }

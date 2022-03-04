@@ -7,7 +7,13 @@ describe('next/module.xsd/model', function () {
 
     test('DEVELOP', function () {
 
-        console.log(model);
+        // console.log(model);
+
+        // const string = new model.string('1234');
+        // console.log(string);
+
+        const decimal = new model.decimal('1234');
+        console.log(decimal);
 
     });
 
