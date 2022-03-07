@@ -9,7 +9,7 @@ function fractionDigits(param) {
 
     return (value) => {
         if (typeof value !== 'number') throw new FractionDigitsError('expected to be a number');
-        if (isNaN(param) || param === Infinity || param === -Infinity) return value;
+        if (isNaN(value) || value === Infinity || value === -Infinity) return value;
         const factor = 10 ** param;
         return Math.round(factor * value) / factor;
     };

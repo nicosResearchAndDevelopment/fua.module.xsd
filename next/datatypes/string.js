@@ -4,11 +4,15 @@ const
 
 class string extends model.anySimpleType {
 
-    static get facets() {
-        const facets = model.anySimpleType.facets();
-        facets.push(model.whiteSpace('preserve'));
-        return facets;
+    static get whiteSpace() {
+        return 'preserve';
     }
+
+    // static get facets() {
+    //     const facets = model.anySimpleType.facets();
+    //     facets.push(model.whiteSpace('preserve'));
+    //     return facets;
+    // }
 
 }
 

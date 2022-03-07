@@ -9,7 +9,7 @@ function totalDigits(param) {
 
     return (value) => {
         if (!util.isAnyNumber(value)) throw new TotalDigitsError('expected to be a number');
-        if (isNaN(param) || param === Infinity || param === -Infinity) return value;
+        if (isNaN(value) || value === Infinity || value === -Infinity) return value;
         const shift = 1 + Math.floor(Math.log10(value)), factor = 10 ** (param - shift);
         return Math.round(factor * value) / factor;
     };

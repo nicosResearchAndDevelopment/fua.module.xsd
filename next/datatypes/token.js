@@ -4,11 +4,15 @@ const
 
 class token extends model.normalizedString {
 
-    static get facets() {
-        const facets = model.string.facets();
-        facets.push(model.whiteSpace('collapse'));
-        return facets;
+    static get whiteSpace() {
+        return 'collapse';
     }
+
+    // static get facets() {
+    //     const facets = model.string.facets();
+    //     facets.push(model.whiteSpace('collapse'));
+    //     return facets;
+    // }
 
 }
 
