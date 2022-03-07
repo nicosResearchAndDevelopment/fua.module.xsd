@@ -4,26 +4,30 @@ const
 
 class anySimpleType extends model.anyType {
 
+    #value = '';
+
     constructor(value) {
         if (new.target === anySimpleType) throw new Error('abstract class cannot be constructed');
-        super(value);
+        if (!util.isString(value)) throw new Error('expected value to be a string');
+        super();
+        this.#value = value;
     }
 
-    // get value() {
-    //     return super.value;
-    // }
-    //
-    // set value(value) {
-    //     if (!util.isString(value)) throw new Error('expected value to be a string');
-    //     super.value = value;
-    // }
+    get value() {
+        return this.#value;
+    }
+
+    set value(value) {
+        if (!util.isString(value)) throw new Error('expected value to be a string');
+        this.#value = value;
+    }
 
     valueOf() {
-        return util.isPrimitive(this.value) ? this.value : this.toString();
+        return this.value;
     }
 
     toString() {
-        return '' + this.value;
+        return this.value;
     }
 
     toJSON() {
@@ -32,41 +36,45 @@ class anySimpleType extends model.anyType {
         return result;
     }
 
-    static equal(left, right) {
-        if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
-        if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
-        return left.type === right.type && left.value === right.value;
+    static get facets() {
+        return [];
     }
 
-    static notEqual(left, right) {
-        if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
-        if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
-        return left.type !== right.type || left.value !== right.value;
-    }
-
-    static lessThan(left, right) {
-        if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
-        if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
-        return left.type === right.type && left.value < right.value;
-    }
-
-    static lessThanOrEqual(left, right) {
-        if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
-        if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
-        return left.type === right.type && left.value <= right.value;
-    }
-
-    static greaterThan(left, right) {
-        if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
-        if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
-        return left.type === right.type && left.value > right.value;
-    }
-
-    static greaterThanOrEqual(left, right) {
-        if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
-        if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
-        return left.type === right.type && left.value >= right.value;
-    }
+    // static equal(left, right) {
+    //     if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
+    //     if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
+    //     return left.type === right.type && left.value === right.value;
+    // }
+    //
+    // static notEqual(left, right) {
+    //     if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
+    //     if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
+    //     return left.type !== right.type || left.value !== right.value;
+    // }
+    //
+    // static lessThan(left, right) {
+    //     if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
+    //     if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
+    //     return left.type === right.type && left.value < right.value;
+    // }
+    //
+    // static lessThanOrEqual(left, right) {
+    //     if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
+    //     if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
+    //     return left.type === right.type && left.value <= right.value;
+    // }
+    //
+    // static greaterThan(left, right) {
+    //     if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
+    //     if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
+    //     return left.type === right.type && left.value > right.value;
+    // }
+    //
+    // static greaterThanOrEqual(left, right) {
+    //     if (!(left instanceof anySimpleType)) throw new Error('expected left to be a Datatype');
+    //     if (!(right instanceof anySimpleType)) throw new Error('expected right to be a Datatype');
+    //     return left.type === right.type && left.value >= right.value;
+    // }
 
 }
 

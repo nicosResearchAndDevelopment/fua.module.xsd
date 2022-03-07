@@ -7,12 +7,19 @@ const
 
 class decimal extends model.anySimpleType {
 
+    static get facets() {
+        const facets = model.string.facets();
+        facets.push(model.whiteSpace('collapse'));
+        facets.push(model.pattern(regex.XSD_decimal_pattern));
+    }
+
     #negative   = false;
     #intPart    = zero;
     #fracPart   = zero;
     #fracLength = 0;
 
     constructor(value) {
+        // value = model.whiteSpace.collapse(value);
         super(value);
         this.#negative   = false;
         this.#intPart    = zero;
