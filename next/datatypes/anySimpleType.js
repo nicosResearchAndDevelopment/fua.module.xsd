@@ -18,6 +18,14 @@ class anySimpleType extends model.anyType {
         return this.#value;
     }
 
+    // set value(value) {
+    //     const facets = this.type.facets || [];
+    //     for (let facet of facets) {
+    //         value = facet(value);
+    //     }
+    //     this.#value = value;
+    // }
+
     set value(value) {
         if (!util.isString(value)) throw new Error('expected value to be a string');
 

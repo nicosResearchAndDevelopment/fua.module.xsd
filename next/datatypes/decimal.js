@@ -3,7 +3,12 @@ const
     model        = require('../module.xsd.model.js'),
     regex        = require('@nrd/fua.core.regex'),
     zero         = BigInt(0),
-    negative_one = BigInt(-1);
+    negative_one = BigInt(-1),
+    facets       = {
+        whiteSpace: model.whiteSpace('collapse'),
+        pattern:    model.pattern(regex.XSD_decimal_pattern),
+        numeric:    model.numeric(true)
+    };
 
 class decimal extends model.anySimpleType {
 
