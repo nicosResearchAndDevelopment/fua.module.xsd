@@ -1,6 +1,8 @@
 const
     {describe, test} = require('mocha'),
     expect           = require('expect'),
+    {inspect}        = require('util'),
+    logValue         = value => console.log(inspect(value, false, null, true)),
     model            = require('./module.xsd.model.js');
 
 describe('next/module.xsd/model', function () {
@@ -15,7 +17,7 @@ describe('next/module.xsd/model', function () {
 
         test('xsd:string', function () {
             const string = model.string.from('1234');
-            console.log(string);
+            logValue(string.value);
             // TODO
         });
 
@@ -24,8 +26,8 @@ describe('next/module.xsd/model', function () {
         });
 
         test('xsd:decimal', function () {
-            const decimal = model.decimal.from('1234');
-            console.log(decimal);
+            const decimal = model.decimal.from('1234.456');
+            logValue(decimal.value);
             // TODO
         });
 

@@ -5,6 +5,7 @@ const
 class anyType {
 
     #datatype = null;
+    #locked   = false;
 
     constructor() {
         if (new.target === anyType) throw new Error('abstract class cannot be constructed');
@@ -13,6 +14,15 @@ class anyType {
 
     get type() {
         return this.#datatype;
+    }
+
+    get locked() {
+        return this.#locked;
+    }
+
+    lock() {
+        this.#locked = true;
+        return this;
     }
 
     toJSON() {

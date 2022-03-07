@@ -1,3 +1,10 @@
+// Fundamental Facets: https://www.w3.org/TR/xmlschema11-2/#rf-fund-facets
+
+exports.ordered     = require('./facets/ordered.js');
+exports.bounded     = require('./facets/bounded.js');
+exports.cardinality = require('./facets/cardinality.js');
+exports.numeric     = require('./facets/numeric.js');
+
 // Constraining Facets: https://www.w3.org/TR/xmlschema11-2/#rf-facets
 
 exports.length           = require('./facets/length.js');

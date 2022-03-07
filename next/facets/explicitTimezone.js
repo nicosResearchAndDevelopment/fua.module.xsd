@@ -16,7 +16,7 @@ function explicitTimezone(param) {
             return (value) => {
                 if (!util.isString(value)) throw new ExplicitTimezoneError('expected to be a string');
                 if (value.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(value))
-                    throw new ExplicitTimezoneError('expected to not to include timezone offset');
+                    throw new ExplicitTimezoneError('expected to not include timezone offset');
                 return value;
             };
         case 'optional':
