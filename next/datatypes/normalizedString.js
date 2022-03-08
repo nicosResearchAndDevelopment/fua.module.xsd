@@ -7,7 +7,7 @@ class normalizedString extends model.string {
     constructor(value) {
         super(value);
 
-        this.value = this.value.replace(/[\t\r\n]/g, ' ');
+        this.value = util.replaceWhiteSpace(this.value);
 
         if (this.type === normalizedString) util.lockAllProp(this);
     }

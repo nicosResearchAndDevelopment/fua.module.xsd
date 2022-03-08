@@ -8,7 +8,7 @@ class decimal extends model.anySimpleType {
     constructor(value) {
         super(value);
 
-        this.value                                            = this.value.replace(/\s+/g, ' ').trim();
+        this.value                                            = util.collapseWhiteSpace(this.value);
         const [match, sign, integer, fraction, only_fraction] = pattern.exec(this.value) || [];
         if (!match) throw new Error('expected to match decimal pattern');
 

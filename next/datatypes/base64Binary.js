@@ -7,6 +7,7 @@ class base64Binary extends model.anySimpleType {
     constructor(value) {
         super(value);
 
+        this.value  = util.collapseWhiteSpace(this.value);
         this.buffer = Buffer.from(this.value, 'base64');
         this.value  = this.buffer.toString('base64');
 

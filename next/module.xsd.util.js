@@ -10,10 +10,14 @@ const
 
 util.decimalToString = function (value) {
     return DecimalFormat.format(value);
-}
+};
 
-util.facet = {
-    whiteSpace: Symbol('whiteSpace')
+util.replaceWhiteSpace = function (value) {
+    return value.replace(/\s/g, ' ');
+};
+
+util.collapseWhiteSpace = function (value) {
+    return value.replace(/\s+/g, ' ').trim();
 };
 
 util.xsdIRI.anyType            = util.xsdIRI('anyType');

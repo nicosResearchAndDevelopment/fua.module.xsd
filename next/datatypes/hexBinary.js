@@ -7,6 +7,7 @@ class hexBinary extends model.anySimpleType {
     constructor(value) {
         super(value);
 
+        this.value  = util.collapseWhiteSpace(this.value);
         this.buffer = Buffer.from(this.value, 'hex');
         this.value  = this.buffer.toString('hex');
 

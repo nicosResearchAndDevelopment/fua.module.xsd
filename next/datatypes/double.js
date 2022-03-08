@@ -8,7 +8,7 @@ class double extends model.anySimpleType {
     constructor(value) {
         super(value);
 
-        this.value                                                 = this.value.replace(/\s+/g, ' ').trim();
+        this.value                                                 = util.collapseWhiteSpace(this.value);
         const [match, nan, sign, inf, decimal, exp_sign, exponent] = pattern.exec(this.value) || [];
         if (!match) throw new Error('expected to match float pattern');
 

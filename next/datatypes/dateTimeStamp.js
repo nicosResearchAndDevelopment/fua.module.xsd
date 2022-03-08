@@ -7,7 +7,8 @@ class dateTimeStamp extends model.dateTime {
     constructor(value) {
         super(value);
 
-        // TODO
+        if (!(this.utc && this.offset === null)) throw new Error('expected to match dateTimeStamp pattern');
+        delete this.offset;
 
         if (this.type === dateTimeStamp) util.lockAllProp(this);
     }

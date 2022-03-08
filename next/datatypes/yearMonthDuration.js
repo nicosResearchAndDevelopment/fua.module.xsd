@@ -7,7 +7,13 @@ class yearMonthDuration extends model.duration {
     constructor(value) {
         super(value);
 
-        // TODO
+        if (this.days || this.hours || this.minutes || this.seconds || this.milliseconds)
+            throw new Error('expected to match yearMonthDuration pattern');
+        delete this.days;
+        delete this.hours;
+        delete this.minutes;
+        delete this.seconds;
+        delete this.milliseconds;
 
         if (this.type === yearMonthDuration) util.lockAllProp(this);
     }

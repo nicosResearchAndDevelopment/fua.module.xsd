@@ -7,7 +7,7 @@ class token extends model.normalizedString {
     constructor(value) {
         super(value);
 
-        this.value = this.value.replace(/ +/g, ' ').trim();
+        this.value = util.collapseWhiteSpace(this.value);
 
         if (this.type === token) util.lockAllProp(this);
     }

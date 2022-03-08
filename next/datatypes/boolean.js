@@ -9,6 +9,7 @@ class boolean extends model.anySimpleType {
     constructor(value) {
         super(value);
 
+        this.value  = util.collapseWhiteSpace(this.value);
         if (truthy.includes[this.value]) {
             this.bool  = true;
             this.value = truthy[0];
@@ -20,6 +21,10 @@ class boolean extends model.anySimpleType {
         }
 
         if (this.type === boolean) util.lockAllProp(this);
+    }
+
+    valueOf() {
+        return this.bool;
     }
 
 }
