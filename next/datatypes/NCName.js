@@ -4,6 +4,14 @@ const
 
 class NCName extends model.Name {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === NCName) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = NCName;

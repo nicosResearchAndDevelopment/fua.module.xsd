@@ -4,6 +4,14 @@ const
 
 class Name extends model.token {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === Name) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = Name;

@@ -4,6 +4,14 @@ const
 
 class dayTimeDuration extends model.duration {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === dayTimeDuration) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = dayTimeDuration;

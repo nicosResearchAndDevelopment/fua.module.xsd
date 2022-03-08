@@ -1,30 +1,16 @@
 const
     util  = require('../module.xsd.util.js'),
-    model = require('../module.xsd.model.js'),
-    facets = {
-        whiteSpace: model.whiteSpace('replace')
-    };
+    model = require('../module.xsd.model.js');
 
 class normalizedString extends model.string {
 
-    // get value() {
-    //     return super.value;
-    // }
-    //
-    // set value(value) {
-    //     if (!util.isString(value)) throw new Error('expected value to be a string');
-    //     super.value = value.replace(/[\t\r\n]/g, ' ');
-    // }
+    constructor(value) {
+        super(value);
 
-    // static get whiteSpace() {
-    //     return 'replace';
-    // }
+        this.value = this.value.replace(/[\t\r\n]/g, ' ');
 
-    // static get facets() {
-    //     const facets = model.string.facets();
-    //     facets.push(model.whiteSpace('replace'));
-    //     return facets;
-    // }
+        if (this.type === normalizedString) util.lockAllProp(this);
+    }
 
 }
 

@@ -4,6 +4,14 @@ const
 
 class gYearMonth extends model.anySimpleType {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === gYearMonth) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = gYearMonth;

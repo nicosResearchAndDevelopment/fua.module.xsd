@@ -4,6 +4,14 @@ const
 
 class positiveInteger extends model.nonNegativeInteger {
 
+    constructor(value) {
+        super(value);
+
+        if (this.integer === '0') throw new Error('expected to be a positive integer');
+
+        if (this.type === positiveInteger) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = positiveInteger;

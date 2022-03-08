@@ -4,6 +4,14 @@ const
 
 class dateTime extends model.anySimpleType {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === dateTime) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = dateTime;

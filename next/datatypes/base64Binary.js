@@ -4,26 +4,17 @@ const
 
 class base64Binary extends model.anySimpleType {
 
-    static get binary() {
-        return 'base64';
+    constructor(value) {
+        super(value);
+
+        this.buffer = Buffer.from(this.value, 'base64');
+        this.value  = this.buffer.toString('base64');
+
+        if (this.type === base64Binary) util.lockAllProp(this);
     }
 
-    // get value() {
-    //     return super.value;
-    // }
-    //
-    // set value(value) {
-    //     if (util.isString(value)) {
-    //         super.value = Buffer.from(value, 'base64');
-    //     } else if (util.isBuffer(value)) {
-    //         super.value = value;
-    //     } else {
-    //         throw new Error('expected value to be a string or a Buffer');
-    //     }
-    // }
-
     toString() {
-        return this.value.toString(this.type.binary);
+        return this.buffer.toString('base64');
     }
 
 }

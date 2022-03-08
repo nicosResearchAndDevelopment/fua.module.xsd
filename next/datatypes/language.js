@@ -4,6 +4,14 @@ const
 
 class language extends model.token {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === language) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = language;

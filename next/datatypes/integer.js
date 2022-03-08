@@ -1,21 +1,16 @@
 const
-    util   = require('../module.xsd.util.js'),
-    model  = require('../module.xsd.model.js'),
-    regex  = require('@nrd/fua.core.regex'),
-    facets = {
-        whiteSpace: model.whiteSpace('collapse'),
-        pattern:    model.pattern(regex.XSD_integer_pattern),
-        numeric:    model.numeric(true)
-    };
+    util  = require('../module.xsd.util.js'),
+    model = require('../module.xsd.model.js');
 
 class integer extends model.decimal {
 
-    static get pattern() {
-        return regex.XSD_integer_pattern;
-    }
+    constructor(value) {
+        super(value);
 
-    static get fractionDigits() {
-        return 0;
+        if (this.fraction !== '0') throw new Error('expected to be an integer');
+        delete this.fraction;
+
+        if (this.type === integer) util.lockAllProp(this);
     }
 
 }

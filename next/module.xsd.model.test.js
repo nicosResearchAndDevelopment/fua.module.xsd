@@ -16,8 +16,8 @@ describe('next/module.xsd/model', function () {
     describe('primitive datatypes', function () {
 
         test('xsd:string', function () {
-            logValue(model.string.from('  Hello  World!  ').value);
-            logValue(model.string.from('1234').value);
+            logValue(new model.string('  Hello  World!  '));
+            logValue(new model.string('1234'));
             // TODO
         });
 
@@ -26,7 +26,7 @@ describe('next/module.xsd/model', function () {
         });
 
         test('xsd:decimal', function () {
-            logValue(model.decimal.from('1234.456').value);
+            logValue(new model.decimal('1234.456'));
             // TODO
         });
 
@@ -99,12 +99,12 @@ describe('next/module.xsd/model', function () {
     describe('other datatypes', function () {
 
         test('xsd:normalizedString', function () {
-            logValue(model.normalizedString.from('  Hello  World!  ').value);
+            logValue(new model.normalizedString('  Hello  World!  '));
             // TODO
         });
 
         test('xsd:token', function () {
-            logValue(model.token.from('  Hello  World!  ').value);
+            logValue(new model.token('  Hello  World!  '));
             // TODO
         });
 
@@ -149,8 +149,8 @@ describe('next/module.xsd/model', function () {
         });
 
         test('xsd:integer', function () {
-            logValue(model.integer.from('123456').value);
-            // logValue(model.integer.from('123456.456').value);
+            logValue(new model.integer('123456'));
+            // logValue(new model.integer('123456.456'));
             // TODO
         });
 

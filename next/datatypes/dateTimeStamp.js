@@ -4,6 +4,14 @@ const
 
 class dateTimeStamp extends model.dateTime {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === dateTimeStamp) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = dateTimeStamp;

@@ -4,6 +4,14 @@ const
 
 class IDREF extends model.NCName {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === IDREF) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = IDREF;

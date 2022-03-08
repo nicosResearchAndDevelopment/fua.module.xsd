@@ -4,6 +4,14 @@ const
 
 class NOTATION extends model.anySimpleType {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === NOTATION) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = NOTATION;

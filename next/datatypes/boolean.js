@@ -1,32 +1,25 @@
 const
-    util  = require('../module.xsd.util.js'),
-    model = require('../module.xsd.model.js');
+    util   = require('../module.xsd.util.js'),
+    model  = require('../module.xsd.model.js'),
+    truthy = ['true', '1'],
+    falsy  = ['false', '0'];
 
 class boolean extends model.anySimpleType {
 
-    get value() {
-        return super.value;
-    }
+    constructor(value) {
+        super(value);
 
-    set value(value) {
-        switch (value) {
-            case true:
-            case 'true':
-            case '1':
-                super.value = true;
-                break;
-            case false:
-            case 'false':
-            case '0':
-                super.value = false;
-                break;
-            default:
-                throw new Error('expected value to be a boolean or a boolean string');
+        if (truthy.includes[this.value]) {
+            this.bool  = true;
+            this.value = truthy[0];
+        } else if (falsy.includes[this.value]) {
+            this.bool  = false;
+            this.value = falsy[0];
+        } else {
+            throw new Error('expected to match boolean pattern');
         }
-    }
 
-    toString() {
-        return super.value.toString();
+        if (this.type === boolean) util.lockAllProp(this);
     }
 
 }

@@ -4,6 +4,14 @@ const
 
 class yearMonthDuration extends model.duration {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === yearMonthDuration) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = yearMonthDuration;

@@ -4,6 +4,15 @@ const
 
 class NMTOKENS extends model.NMTOKEN {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+        // FIXME list derivation will probably throw in parent type
+
+        if (this.type === NMTOKENS) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = NMTOKENS;

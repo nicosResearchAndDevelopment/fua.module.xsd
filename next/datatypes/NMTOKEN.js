@@ -4,6 +4,14 @@ const
 
 class NMTOKEN extends model.token {
 
+    constructor(value) {
+        super(value);
+
+        // TODO
+
+        if (this.type === NMTOKEN) util.lockAllProp(this);
+    }
+
 }
 
 module.exports = NMTOKEN;
