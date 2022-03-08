@@ -6,6 +6,9 @@ const
 class decimal extends model.anySimpleType {
 
     constructor(value) {
+        if (util.isFiniteNumber(value))
+            value = util.decimalToString(value);
+
         super(value);
 
         this.value                                            = util.collapseWhiteSpace(this.value);

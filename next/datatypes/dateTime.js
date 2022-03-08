@@ -6,6 +6,9 @@ const
 class dateTime extends model.anySimpleType {
 
     constructor(value) {
+        if (util.isDate(value))
+            value = value.toISOString();
+
         super(value);
 
         this.value                                                                 = util.collapseWhiteSpace(this.value);

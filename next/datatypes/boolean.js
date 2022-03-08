@@ -7,13 +7,16 @@ const
 class boolean extends model.anySimpleType {
 
     constructor(value) {
+        if (util.isBoolean(value) || value === 0 || value === 1)
+            value = value ? truthy[0] : falsy[0];
+
         super(value);
 
-        this.value  = util.collapseWhiteSpace(this.value);
-        if (truthy.includes[this.value]) {
+        this.value = util.collapseWhiteSpace(this.value);
+        if (truthy.includes(this.value)) {
             this.bool  = true;
             this.value = truthy[0];
-        } else if (falsy.includes[this.value]) {
+        } else if (falsy.includes(this.value)) {
             this.bool  = false;
             this.value = falsy[0];
         } else {
