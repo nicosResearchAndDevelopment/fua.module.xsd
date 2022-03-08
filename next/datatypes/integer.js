@@ -1,7 +1,12 @@
 const
-    util  = require('../module.xsd.util.js'),
-    model = require('../module.xsd.model.js'),
-    regex = require('@nrd/fua.core.regex');
+    util   = require('../module.xsd.util.js'),
+    model  = require('../module.xsd.model.js'),
+    regex  = require('@nrd/fua.core.regex'),
+    facets = {
+        whiteSpace: model.whiteSpace('collapse'),
+        pattern:    model.pattern(regex.XSD_integer_pattern),
+        numeric:    model.numeric(true)
+    };
 
 class integer extends model.decimal {
 

@@ -33,13 +33,8 @@ class anyType {
         return util.xsdIRI(this.name);
     }
 
-    static from(value) {
-        if (value instanceof this) return this;
-        if (value instanceof anyType)
-            throw new Error(`expected ${this.id} but got ${value.type.id}`);
-        if (util.isObject(value) && util.isString(value['@value']))
-            return new this(value['@value']);
-        return new this(value);
+    static from() {
+        return new this();
     }
 
 }
