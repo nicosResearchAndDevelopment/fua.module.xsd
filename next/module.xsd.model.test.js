@@ -262,11 +262,125 @@ describe('next/module.xsd/model', function () {
         });
 
         test('xsd:duration', function () {
-            this.skip(); // TODO
+            expect(new model.duration('PT1004199059S')).toMatchObject({
+                value:   'PT1004199059S',
+                sign:    '+',
+                seconds: 1004199059
+            });
+            expect(new model.duration('PT130S')).toMatchObject({
+                value:   'PT130S',
+                sign:    '+',
+                seconds: 130
+            });
+            expect(new model.duration('PT2M10S')).toMatchObject({
+                value:   'PT2M10S',
+                sign:    '+',
+                minutes: 2,
+                seconds: 10
+            });
+            expect(new model.duration('P1DT2S')).toMatchObject({
+                value:   'P1DT2S',
+                sign:    '+',
+                days:    1,
+                seconds: 2
+            });
+            expect(new model.duration('-P1Y')).toMatchObject({
+                value: '-P1Y',
+                sign:  '-',
+                years: 1
+            });
+            expect(new model.duration('P1Y2M3DT5H20M30.123S')).toMatchObject({
+                value:        'P1Y2M3DT5H20M30.123S',
+                sign:         '+',
+                years:        1,
+                months:       2,
+                days:         3,
+                hours:        5,
+                minutes:      20,
+                seconds:      30,
+                milliseconds: 123
+            });
+            expect(new model.duration('PT1.1S')).toMatchObject({
+                value:        'PT1.1S',
+                sign:         '+',
+                seconds:      1,
+                milliseconds: 100
+            });
+            expect(() => new model.duration('1Y')).toThrow();
+            expect(() => new model.duration('P1S')).toThrow();
+            expect(() => new model.duration('P-1Y')).toThrow();
+            expect(() => new model.duration('P1M2Y')).toThrow();
+            expect(() => new model.duration('P1Y-1M')).toThrow();
         });
 
         test('xsd:dateTime', function () {
-            this.skip(); // TODO
+            expect(new model.dateTime('2001-10-26T21:32:52')).toMatchObject({
+                value:  '2001-10-26T21:32:52',
+                year:   2001,
+                month:  10,
+                day:    26,
+                hour:   21,
+                minute: 32,
+                second: 52,
+                utc:    false
+            });
+            expect(new model.dateTime('2001-10-26T21:32:52+02:00')).toMatchObject({
+                value:  '2001-10-26T21:32:52+02:00',
+                year:   2001,
+                month:  10,
+                day:    26,
+                hour:   21,
+                minute: 32,
+                second: 52,
+                utc:    false,
+                offset: 120
+            });
+            expect(new model.dateTime('2001-10-26T19:32:52Z')).toMatchObject({
+                value:  '2001-10-26T19:32:52Z',
+                year:   2001,
+                month:  10,
+                day:    26,
+                hour:   19,
+                minute: 32,
+                second: 52,
+                utc:    true
+            });
+            expect(new model.dateTime('2001-10-26T19:32:52+00:00')).toMatchObject({
+                value:  '2001-10-26T19:32:52+00:00',
+                year:   2001,
+                month:  10,
+                day:    26,
+                hour:   19,
+                minute: 32,
+                second: 52,
+                utc:    true,
+                offset: 0
+            });
+            expect(new model.dateTime('-2001-10-26T21:32:52')).toMatchObject({
+                value:  '-2001-10-26T21:32:52',
+                year:   -2001,
+                month:  10,
+                day:    26,
+                hour:   21,
+                minute: 32,
+                second: 52,
+                utc:    false
+            });
+            expect(new model.dateTime('2001-10-26T21:32:52.12679')).toMatchObject({
+                value:       '2001-10-26T21:32:52.12679',
+                year:        2001,
+                month:       10,
+                day:         26,
+                hour:        21,
+                minute:      32,
+                second:      52,
+                millisecond: 126.79,
+                utc:         false
+            });
+            expect(() => new model.dateTime('2001-10-26')).toThrow();
+            expect(() => new model.dateTime('2001-10-26T21:32')).toThrow();
+            expect(() => new model.dateTime('2001-10-26T25:32:52+02:00')).toThrow();
+            expect(() => new model.dateTime('01-10-26T21:32')).toThrow();
         });
 
         test('xsd:time', function () {
