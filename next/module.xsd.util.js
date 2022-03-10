@@ -6,7 +6,7 @@ const
         xsdIRI: (prop) => 'xsd:' + prop,
         xsdURI: (prop) => 'http://www.w3.org/2001/XMLSchema#' + prop
     },
-    DecimalFormat = new Intl.NumberFormat('en', {style: 'decimal', useGrouping: false});
+    DecimalFormat = new Intl.NumberFormat('en', {style: 'decimal', useGrouping: false, maximumSignificantDigits: 21});
 
 util.decimalToString = function (value) {
     return DecimalFormat.format(value);
