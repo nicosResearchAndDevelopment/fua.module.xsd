@@ -28,16 +28,19 @@ class double extends model.anySimpleType {
         this.exponent = exponent ? exponent.replace(/^0+$/, '') : '';
         this.expSign  = this.exponent ? exp_sign || '+' : '';
         this.value    = this.NaN ? 'NaN' : (this.sign === '-' ? '-' : '') +
-            (this.infinite ? 'INF' : this.decimal + (this.exponent ? 'e' + this.expSign + this.exponent : ''))
+            (this.infinite ? 'INF' : this.decimal + (this.exponent ? 'e' + this.expSign + this.exponent : ''));
 
-        if (this.type === double) util.lockAllProp(this);
+        this.numericSign  = this.sign === '+' && 1 || this.sign === '-' && -1 || 0;
+        this.numericValue = this.NaN ? NaN
+            : this.infinite ? this.numericSign * Infinity
+                : this.exponent ? Number(this.sign + this.decimal + 'e' + this.expSign + this.exponent)
+                    : Number(this.sign + this.decimal);
+
+        if (this.type === double) Object.freeze(this);
     }
 
     valueOf() {
-        if (this.NaN) return NaN;
-        if (this.infinite) return this.sign === '-' ? -Infinity : Infinity;
-        if (this.exponent) return Number(this.sign + this.decimal + 'e' + this.expSign + this.exponent);
-        return Number(this.sign + this.decimal);
+        return this.numericValue;
     }
 
 }

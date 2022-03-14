@@ -10,7 +10,7 @@ class NOTATION extends model.anySimpleType {
         this.value = util.collapseWhiteSpace(this.value);
         // TODO
 
-        if (this.type === NOTATION) util.lockAllProp(this);
+        if (this.type === NOTATION) Object.freeze(this);
     }
 
 }

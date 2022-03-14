@@ -10,7 +10,7 @@ class string extends model.anySimpleType {
 
         super(value);
 
-        if (this.type === string) util.lockAllProp(this);
+        if (this.type === string) Object.freeze(this);
     }
 
 }

@@ -12,7 +12,7 @@ class dayTimeDuration extends model.duration {
         delete this.years;
         delete this.months;
 
-        if (this.type === dayTimeDuration) util.lockAllProp(this);
+        if (this.type === dayTimeDuration) Object.freeze(this);
     }
 
 }

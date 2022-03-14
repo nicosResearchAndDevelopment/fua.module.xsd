@@ -15,7 +15,7 @@ class yearMonthDuration extends model.duration {
         delete this.seconds;
         delete this.milliseconds;
 
-        if (this.type === yearMonthDuration) util.lockAllProp(this);
+        if (this.type === yearMonthDuration) Object.freeze(this);
     }
 
 }

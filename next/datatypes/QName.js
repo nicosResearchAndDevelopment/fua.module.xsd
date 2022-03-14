@@ -10,7 +10,7 @@ class QName extends model.anySimpleType {
         this.value = util.collapseWhiteSpace(this.value);
         // TODO
 
-        if (this.type === QName) util.lockAllProp(this);
+        if (this.type === QName) Object.freeze(this);
     }
 
 }

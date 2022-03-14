@@ -6,6 +6,9 @@ const
 class duration extends model.anySimpleType {
 
     constructor(value) {
+        if (util.isFiniteNumber(value))
+            value = (value < 0 ? '-' : '') + 'PT' + Math.abs(value) + 'S';
+
         super(value);
 
         this.value                                             = util.collapseWhiteSpace(this.value);
@@ -21,7 +24,7 @@ class duration extends model.anySimpleType {
         this.seconds      = parseInt(ss);
         this.milliseconds = ss_frac ? parseFloat(ss_frac.substr(1, 3).padEnd(3, '0') + '.' + ss_frac.substr(4)) : 0;
 
-        if (this.type === duration) util.lockAllProp(this);
+        if (this.type === duration) Object.freeze(this);
     }
 
 }

@@ -9,7 +9,7 @@ class ID extends model.NCName {
 
         // TODO
 
-        if (this.type === ID) util.lockAllProp(this);
+        if (this.type === ID) Object.freeze(this);
     }
 
 }

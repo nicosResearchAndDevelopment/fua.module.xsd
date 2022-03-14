@@ -10,7 +10,7 @@ class IDREFS extends model.IDREF {
         // TODO
         // FIXME list derivation will probably throw in parent type
 
-        if (this.type === IDREFS) util.lockAllProp(this);
+        if (this.type === IDREFS) Object.freeze(this);
     }
 
 }

@@ -6,8 +6,16 @@ const
 class dateTime extends model.anySimpleType {
 
     constructor(value) {
+        if (util.isFiniteNumber(value))
+            value = new Date(value * 1000);
         if (util.isDate(value))
-            value = value.toISOString();
+            value = value.getUTCFullYear().toString() + '-' +
+                (value.getUTCMonth() + 1).toString().padStart(2, '0') + '-' +
+                value.getUTCDate().toString().padStart(2, '0') + 'T' +
+                value.getUTCHours().toString().padStart(2, '0') + ':' +
+                value.getUTCMinutes().toString().padStart(2, '0') + ':' +
+                value.getUTCSeconds().toString().padStart(2, '0') + '.' +
+                value.getUTCMilliseconds().toString().padStart(3, '0') + 'Z';
 
         super(value);
 
@@ -25,7 +33,10 @@ class dateTime extends model.anySimpleType {
         this.offset      = tz_sign ? (tz_sign === '-' ? -1 : 1) * (60 * parseInt(tz_hh) + parseInt(tz_mm)) : null;
         this.utc         = !!utc_tag || this.offset === 0;
 
-        if (this.type === dateTime) util.lockAllProp(this);
+        this.dateValue = new Date(this.value);
+        this.unixValue = this.dateValue.valueOf() / 1000;
+
+        if (this.type === dateTime) Object.freeze(this);
     }
 
 }

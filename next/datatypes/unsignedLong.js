@@ -16,7 +16,7 @@ class unsignedLong extends model.nonNegativeInteger {
             if (digit < compare) break;
         }
 
-        if (this.type === unsignedLong) util.lockAllProp(this);
+        if (this.type === unsignedLong) Object.freeze(this);
     }
 
 }

@@ -10,7 +10,7 @@ class ENTITIES extends model.ENTITY {
         // TODO
         // FIXME list derivation will probably throw in parent type
 
-        if (this.type === ENTITIES) util.lockAllProp(this);
+        if (this.type === ENTITIES) Object.freeze(this);
     }
 
 }

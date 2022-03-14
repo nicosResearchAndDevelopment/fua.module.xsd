@@ -10,7 +10,7 @@ class NMTOKENS extends model.NMTOKEN {
         // TODO
         // FIXME list derivation will probably throw in parent type
 
-        if (this.type === NMTOKENS) util.lockAllProp(this);
+        if (this.type === NMTOKENS) Object.freeze(this);
     }
 
 }

@@ -15,7 +15,7 @@ class unsignedShort extends model.unsignedInt {
             if (digit < compare) break;
         }
 
-        if (this.type === unsignedShort) util.lockAllProp(this);
+        if (this.type === unsignedShort) Object.freeze(this);
     }
 
 }

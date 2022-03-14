@@ -11,7 +11,7 @@ class anySimpleType extends model.anyType {
         if (!util.isString(value)) throw new Error('expected value to be a string');
         this.value = value;
 
-        // if (this.type === anySimpleType) util.lockAllProp(this);
+        // if (this.type === anySimpleType) Object.freeze(this);
     }
 
     valueOf() {

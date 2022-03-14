@@ -14,20 +14,20 @@ class boolean extends model.anySimpleType {
 
         this.value = util.collapseWhiteSpace(this.value);
         if (truthy.includes(this.value)) {
-            this.bool  = true;
-            this.value = truthy[0];
+            this.boolValue = true;
+            this.value     = truthy[0];
         } else if (falsy.includes(this.value)) {
-            this.bool  = false;
-            this.value = falsy[0];
+            this.boolValue = false;
+            this.value     = falsy[0];
         } else {
             throw new Error('expected to match boolean pattern');
         }
 
-        if (this.type === boolean) util.lockAllProp(this);
+        if (this.type === boolean) Object.freeze(this);
     }
 
     valueOf() {
-        return this.bool;
+        return this.boolValue;
     }
 
 }

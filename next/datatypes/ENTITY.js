@@ -9,7 +9,7 @@ class ENTITY extends model.NCName {
 
         // TODO
 
-        if (this.type === ENTITY) util.lockAllProp(this);
+        if (this.type === ENTITY) Object.freeze(this);
     }
 
 }

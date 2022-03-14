@@ -8,13 +8,11 @@ class float extends model.double {
         super(value);
 
         // NOTE derivation from double is not intended in the model but practical for this implementation
+        this.numericValue = Math.fround(this.numericValue);
+
         // FIXME lexical value and numeric value differentiation (infinity problem, precision problem)
 
-        if (this.type === float) util.lockAllProp(this);
-    }
-
-    valueOf() {
-        return Math.fround(super.valueOf());
+        if (this.type === float) Object.freeze(this);
     }
 
 }

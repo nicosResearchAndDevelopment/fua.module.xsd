@@ -15,7 +15,7 @@ class unsignedInt extends model.unsignedLong {
             if (digit < compare) break;
         }
 
-        if (this.type === unsignedInt) util.lockAllProp(this);
+        if (this.type === unsignedInt) Object.freeze(this);
     }
 
 }

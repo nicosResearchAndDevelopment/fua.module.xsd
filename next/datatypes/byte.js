@@ -17,7 +17,7 @@ class byte extends model.short {
             if (digit < compare) break;
         }
 
-        if (this.type === byte) util.lockAllProp(this);
+        if (this.type === byte) Object.freeze(this);
     }
 
 }

@@ -9,7 +9,7 @@ class IDREF extends model.NCName {
 
         // TODO
 
-        if (this.type === IDREF) util.lockAllProp(this);
+        if (this.type === IDREF) Object.freeze(this);
     }
 
 }

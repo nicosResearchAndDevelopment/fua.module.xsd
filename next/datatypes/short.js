@@ -17,7 +17,7 @@ class short extends model.int {
             if (digit < compare) break;
         }
 
-        if (this.type === short) util.lockAllProp(this);
+        if (this.type === short) Object.freeze(this);
     }
 
 }

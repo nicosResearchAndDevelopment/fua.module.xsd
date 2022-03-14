@@ -9,7 +9,7 @@ class token extends model.normalizedString {
 
         this.value = util.collapseWhiteSpace(this.value);
 
-        if (this.type === token) util.lockAllProp(this);
+        if (this.type === token) Object.freeze(this);
     }
 
 }

@@ -10,7 +10,7 @@ class nonNegativeInteger extends model.integer {
         if (this.integer === '0') this.sign = '+';
         else if (this.sign === '-') throw new Error('expected to be a non negative integer');
 
-        if (this.type === nonNegativeInteger) util.lockAllProp(this);
+        if (this.type === nonNegativeInteger) Object.freeze(this);
     }
 
 }

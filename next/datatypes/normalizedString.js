@@ -9,7 +9,7 @@ class normalizedString extends model.string {
 
         this.value = util.replaceWhiteSpace(this.value);
 
-        if (this.type === normalizedString) util.lockAllProp(this);
+        if (this.type === normalizedString) Object.freeze(this);
     }
 
 }

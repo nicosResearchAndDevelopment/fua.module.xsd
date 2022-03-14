@@ -15,7 +15,7 @@ class unsignedByte extends model.unsignedShort {
             if (digit < compare) break;
         }
 
-        if (this.type === unsignedByte) util.lockAllProp(this);
+        if (this.type === unsignedByte) Object.freeze(this);
     }
 
 }

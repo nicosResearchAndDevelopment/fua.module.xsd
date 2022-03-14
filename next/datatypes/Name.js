@@ -9,7 +9,7 @@ class Name extends model.token {
 
         // TODO
 
-        if (this.type === Name) util.lockAllProp(this);
+        if (this.type === Name) Object.freeze(this);
     }
 
 }

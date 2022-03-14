@@ -10,7 +10,7 @@ class integer extends model.decimal {
         if (this.fraction !== '0') throw new Error('expected to be an integer');
         delete this.fraction;
 
-        if (this.type === integer) util.lockAllProp(this);
+        if (this.type === integer) Object.freeze(this);
     }
 
 }

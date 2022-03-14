@@ -17,7 +17,7 @@ class long extends model.integer {
             if (digit < compare) break;
         }
 
-        if (this.type === long) util.lockAllProp(this);
+        if (this.type === long) Object.freeze(this);
     }
 
 }

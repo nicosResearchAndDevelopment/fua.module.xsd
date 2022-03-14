@@ -10,7 +10,7 @@ class dateTimeStamp extends model.dateTime {
         if (!(this.utc && this.offset === null)) throw new Error('expected to match dateTimeStamp pattern');
         delete this.offset;
 
-        if (this.type === dateTimeStamp) util.lockAllProp(this);
+        if (this.type === dateTimeStamp) Object.freeze(this);
     }
 
 }

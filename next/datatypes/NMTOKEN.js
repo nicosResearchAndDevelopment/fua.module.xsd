@@ -9,7 +9,7 @@ class NMTOKEN extends model.token {
 
         // TODO
 
-        if (this.type === NMTOKEN) util.lockAllProp(this);
+        if (this.type === NMTOKEN) Object.freeze(this);
     }
 
 }

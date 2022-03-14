@@ -6,6 +6,13 @@ const
 class date extends model.anySimpleType {
 
     constructor(value) {
+        if (util.isFiniteNumber(value))
+            value = new Date(value * 1000);
+        if (util.isDate(value))
+            value = value.getUTCFullYear().toString() + '-' +
+                (value.getUTCMonth() + 1).toString().padStart(2, '0') + '-' +
+                value.getUTCDate().toString().padStart(2, '0') + 'Z';
+
         super(value);
 
         this.value                                                  = util.collapseWhiteSpace(this.value);
@@ -18,7 +25,7 @@ class date extends model.anySimpleType {
         this.offset = tz_sign ? (tz_sign === '-' ? -1 : 1) * (60 * parseInt(tz_hh) + parseInt(tz_mm)) : null;
         this.utc    = !!utc_tag || this.offset === 0;
 
-        if (this.type === date) util.lockAllProp(this);
+        if (this.type === date) Object.freeze(this);
     }
 
 }

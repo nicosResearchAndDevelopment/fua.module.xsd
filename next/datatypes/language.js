@@ -10,7 +10,7 @@ class language extends model.token {
 
         if (!pattern.test(this.value)) throw new Error('expected to match language pattern');
 
-        if (this.type === language) util.lockAllProp(this);
+        if (this.type === language) Object.freeze(this);
     }
 
 }
