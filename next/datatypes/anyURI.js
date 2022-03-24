@@ -6,6 +6,8 @@ const
 
 class anyURI extends model.anySimpleType {
 
+    static id = util.xsdIRI.anyURI;
+
     constructor(value) {
         if (value instanceof URL)
             value = value.toString();

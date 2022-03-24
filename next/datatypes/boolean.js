@@ -6,6 +6,8 @@ const
 
 class boolean extends model.anySimpleType {
 
+    static id = util.xsdIRI.boolean;
+
     constructor(value) {
         if (util.isBoolean(value) || value === 0 || value === 1)
             value = value ? truthy[0] : falsy[0];

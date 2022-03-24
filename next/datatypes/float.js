@@ -4,6 +4,8 @@ const
 
 class float extends model.double {
 
+    static id = util.xsdIRI.float;
+
     constructor(value) {
         super(value);
 

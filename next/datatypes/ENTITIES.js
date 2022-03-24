@@ -4,6 +4,8 @@ const
 
 class ENTITIES extends model.ENTITY {
 
+    static id = util.xsdIRI.ENTITIES;
+
     constructor(value) {
         super(value);
 

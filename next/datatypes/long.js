@@ -6,6 +6,8 @@ const
 
 class long extends model.integer {
 
+    static id = util.xsdIRI.long;
+
     constructor(value) {
         super(value);
 

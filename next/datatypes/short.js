@@ -6,6 +6,8 @@ const
 
 class short extends model.int {
 
+    static id = util.xsdIRI.short;
+
     constructor(value) {
         super(value);
 

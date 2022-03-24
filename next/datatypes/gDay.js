@@ -5,6 +5,8 @@ const
 
 class gDay extends model.anySimpleType {
 
+    static id = util.xsdIRI.gDay;
+
     constructor(value) {
         if (util.isFiniteNumber(value))
             value = new Date(value * 1000);

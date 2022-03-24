@@ -4,6 +4,8 @@ const
 
 class integer extends model.decimal {
 
+    static id = util.xsdIRI.integer;
+
     constructor(value) {
         super(value);
 

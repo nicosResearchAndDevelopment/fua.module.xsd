@@ -4,6 +4,8 @@ const
 
 class hexBinary extends model.anySimpleType {
 
+    static id = util.xsdIRI.hexBinary;
+
     constructor(value) {
         if (util.isBuffer(value))
             value = value.toString('hex');

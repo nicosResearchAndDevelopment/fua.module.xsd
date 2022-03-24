@@ -5,6 +5,8 @@ const
 
 class unsignedByte extends model.unsignedShort {
 
+    static id = util.xsdIRI.unsignedByte;
+
     constructor(value) {
         super(value);
 

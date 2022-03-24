@@ -4,6 +4,8 @@ const
 
 class IDREFS extends model.IDREF {
 
+    static id = util.xsdIRI.IDREFS;
+
     constructor(value) {
         super(value);
 

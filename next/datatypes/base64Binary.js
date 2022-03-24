@@ -4,6 +4,8 @@ const
 
 class base64Binary extends model.anySimpleType {
 
+    static id = util.xsdIRI.base64Binary;
+
     constructor(value) {
         if (util.isBuffer(value))
             value = value.toString('base64');

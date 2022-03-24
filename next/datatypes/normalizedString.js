@@ -4,6 +4,8 @@ const
 
 class normalizedString extends model.string {
 
+    static id = util.xsdIRI.normalizedString;
+
     constructor(value) {
         super(value);
 

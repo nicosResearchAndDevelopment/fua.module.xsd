@@ -4,6 +4,8 @@ const
 
 class dayTimeDuration extends model.duration {
 
+    static id = util.xsdIRI.dayTimeDuration;
+
     constructor(value) {
         super(value);
 

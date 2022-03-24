@@ -4,6 +4,8 @@ const
 
 class IDREF extends model.NCName {
 
+    static id = util.xsdIRI.IDREF;
+
     constructor(value) {
         super(value);
 

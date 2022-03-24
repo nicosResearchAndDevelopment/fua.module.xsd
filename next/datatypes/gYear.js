@@ -5,6 +5,8 @@ const
 
 class gYear extends model.anySimpleType {
 
+    static id = util.xsdIRI.gYear;
+
     constructor(value) {
         if (util.isFiniteNumber(value))
             value = new Date(value * 1000);

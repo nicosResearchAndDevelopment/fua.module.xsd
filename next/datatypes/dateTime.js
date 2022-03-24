@@ -5,6 +5,8 @@ const
 
 class dateTime extends model.anySimpleType {
 
+    static id = util.xsdIRI.dateTime;
+
     constructor(value) {
         if (util.isFiniteNumber(value))
             value = new Date(value * 1000);

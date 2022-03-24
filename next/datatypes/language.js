@@ -5,6 +5,8 @@ const
 
 class language extends model.token {
 
+    static id = util.xsdIRI.language;
+
     constructor(value) {
         super(value);
 

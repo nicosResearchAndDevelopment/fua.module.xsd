@@ -4,6 +4,8 @@ const
 
 class nonPositiveInteger extends model.integer {
 
+    static id = util.xsdIRI.nonPositiveInteger;
+
     constructor(value) {
         super(value);
 

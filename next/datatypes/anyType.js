@@ -4,6 +4,8 @@ const
 
 class anyType {
 
+    static id = util.xsdIRI.anyType;
+
     constructor() {
         if (new.target === anyType) throw new Error('abstract class cannot be constructed');
 
@@ -13,10 +15,6 @@ class anyType {
 
     toJSON() {
         return {'@type': this.type.id};
-    }
-
-    static get id() {
-        return util.xsdIRI(this.name);
     }
 
 }

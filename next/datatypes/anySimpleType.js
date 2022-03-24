@@ -4,14 +4,14 @@ const
 
 class anySimpleType extends model.anyType {
 
+    static id = util.xsdIRI.anySimpleType;
+
     constructor(value) {
         if (new.target === anySimpleType) throw new Error('abstract class cannot be constructed');
         super();
 
         if (!util.isString(value)) throw new Error('expected value to be a string');
         this.value = value;
-
-        // if (this.type === anySimpleType) Object.freeze(this);
     }
 
     valueOf() {

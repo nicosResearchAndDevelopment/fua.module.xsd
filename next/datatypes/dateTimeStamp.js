@@ -4,6 +4,8 @@ const
 
 class dateTimeStamp extends model.dateTime {
 
+    static id = util.xsdIRI.dateTimeStamp;
+
     constructor(value) {
         super(value);
 

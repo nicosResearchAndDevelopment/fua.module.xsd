@@ -5,6 +5,8 @@ const
 
 class duration extends model.anySimpleType {
 
+    static id = util.xsdIRI.duration;
+
     constructor(value) {
         if (util.isFiniteNumber(value))
             value = (value < 0 ? '-' : '') + 'PT' + Math.abs(value) + 'S';

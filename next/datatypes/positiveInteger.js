@@ -4,6 +4,8 @@ const
 
 class positiveInteger extends model.nonNegativeInteger {
 
+    static id = util.xsdIRI.positiveInteger;
+
     constructor(value) {
         super(value);
 

@@ -4,6 +4,8 @@ const
 
 class yearMonthDuration extends model.duration {
 
+    static id = util.xsdIRI.yearMonthDuration;
+
     constructor(value) {
         super(value);
 

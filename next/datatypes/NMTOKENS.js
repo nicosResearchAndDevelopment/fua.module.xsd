@@ -4,6 +4,8 @@ const
 
 class NMTOKENS extends model.NMTOKEN {
 
+    static id = util.xsdIRI.NMTOKENS;
+
     constructor(value) {
         super(value);
 

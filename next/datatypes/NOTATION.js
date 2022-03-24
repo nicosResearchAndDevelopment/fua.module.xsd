@@ -4,6 +4,8 @@ const
 
 class NOTATION extends model.anySimpleType {
 
+    static id = util.xsdIRI.NOTATION;
+
     constructor(value) {
         super(value);
 

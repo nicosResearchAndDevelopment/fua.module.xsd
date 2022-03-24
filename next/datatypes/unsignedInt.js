@@ -5,6 +5,8 @@ const
 
 class unsignedInt extends model.unsignedLong {
 
+    static id = util.xsdIRI.unsignedInt;
+
     constructor(value) {
         super(value);
 

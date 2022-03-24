@@ -5,6 +5,8 @@ const
 
 class double extends model.anySimpleType {
 
+    static id = util.xsdIRI.double;
+
     constructor(value) {
         if (util.isAnyNumber(value))
             value = isNaN(value) ? 'NaN' : value === Infinity ? 'INF' : value === -Infinity ? '-INF' : value.toString();

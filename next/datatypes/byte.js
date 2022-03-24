@@ -6,6 +6,8 @@ const
 
 class byte extends model.short {
 
+    static id = util.xsdIRI.byte;
+
     constructor(value) {
         super(value);
 

@@ -5,6 +5,8 @@ const
 
 class gMonth extends model.anySimpleType {
 
+    static id = util.xsdIRI.gMonth;
+
     constructor(value) {
         if (util.isFiniteNumber(value))
             value = new Date(value * 1000);

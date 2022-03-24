@@ -5,6 +5,8 @@ const
 
 class unsignedLong extends model.nonNegativeInteger {
 
+    static id = util.xsdIRI.unsignedLong;
+
     constructor(value) {
         super(value);
         delete this.sign;

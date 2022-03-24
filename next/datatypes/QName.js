@@ -4,6 +4,8 @@ const
 
 class QName extends model.anySimpleType {
 
+    static id = util.xsdIRI.QName;
+
     constructor(value) {
         super(value);
 

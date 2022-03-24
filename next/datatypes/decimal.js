@@ -5,6 +5,8 @@ const
 
 class decimal extends model.anySimpleType {
 
+    static id = util.xsdIRI.decimal;
+
     constructor(value) {
         if (util.isFiniteNumber(value))
             value = util.decimalToString(value);

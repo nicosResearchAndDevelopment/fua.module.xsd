@@ -4,6 +4,8 @@ const
 
 class token extends model.normalizedString {
 
+    static id = util.xsdIRI.token;
+
     constructor(value) {
         super(value);
 
