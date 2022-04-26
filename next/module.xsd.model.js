@@ -1,3 +1,8 @@
+// const util                = require('./module.xsd.util.js');
+// exports._Datatype         = require('./module.xsd.Datatype.js');
+// exports._DatatypeProperty = require('./module.xsd.DatatypeProperty.js');
+// util.hideProp(exports, '_Datatype', '_DatatypeProperty');
+
 // Special Datatypes: https://www.w3.org/TR/xmlschema11-2/#special-datatypes
 
 exports.anyType       = require('./datatypes/anyType.js');
