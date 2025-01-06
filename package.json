@@ -1,5 +1,5 @@
 {
-  "name": "@nrd/fua.module.xsd",
+  "name": "@fua/module.xsd",
   "version": "1.0.0",
   "description": "",
   "main": "src/module.xsd.js",
@@ -7,11 +7,11 @@
     "src/*"
   ],
   "dependencies": {
-    "@nrd/fua.core.util": "1.0.0"
+    "@fua/core.util": "^1.0.12"
   },
   "devDependencies": {
-    "mocha": "^8.2.1",
-    "expect": "^26.6.2"
+    "expect": "26.x",
+    "mocha": "10.x"
   },
   "scripts": {
     "test": "mocha"
@@ -23,9 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git02.int.nsc.ag:10022/research/fua/module/xsd.git"
+    "url": "ssh://git@github.com:nicosResearchAndDevelopment/fua.module.xsd.git"
   },
-  "keywords": [],
-  "author": "spetrac@nicos-ag.com",
-  "license": "UNLICENSED"
+  "keywords": [
+    "xsd"
+  ],
+  "author": "Simon Petrac <pfoerdie@gmail.com>",
+  "license": "MIT"
 }

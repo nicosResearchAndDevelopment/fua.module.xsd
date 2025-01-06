@@ -1,3 +1,1 @@
-# @nrd/fua.module.xsd
-
----
+# @fua/module.xsd
